@@ -13,7 +13,7 @@
       overflow:hidden;
       font-family: Arial, sans-serif;
       color:white;
-      background: linear-gradient(135deg, #000022, #1a0033); 
+      background: linear-gradient(135deg, #000022, #1a0033);
       display:flex;
       justify-content:center;
       align-items:center;
@@ -30,16 +30,19 @@
       max-width:500px;
       background: rgba(0,0,30,0.75);
       border-radius:20px;
-      box-shadow:0 0 25px rgba(255,0,150,0.7);
       text-align:center;
       padding:20px;
-      animation:glow 3s infinite alternate;
       position:relative;
       z-index:2;
+      animation: neonGlow 6s linear infinite;
     }
-    @keyframes glow {
-      from {box-shadow:0 0 15px rgba(255,0,80,0.3);}
-      to {box-shadow:0 0 40px rgba(255,0,150,0.9);}
+   
+    @keyframes neonGlow {
+      0%   { box-shadow: 0 0 25px rgba(255,0,150,0.8), 0 0 50px rgba(255,0,150,0.6); }
+      25%  { box-shadow: 0 0 25px rgba(255,50,50,0.9), 0 0 60px rgba(255,50,50,0.7); }
+      50%  { box-shadow: 0 0 25px rgba(150,0,255,0.9), 0 0 60px rgba(150,0,255,0.7); }
+      75%  { box-shadow: 0 0 25px rgba(0,150,255,0.9), 0 0 60px rgba(0,150,255,0.7); }
+      100% { box-shadow: 0 0 25px rgba(255,0,150,0.8), 0 0 50px rgba(255,0,150,0.6); }
     }
     h2 { font-family:'Pacifico', cursive; text-shadow:0 0 10px rgba(255,150,200,0.9); }
     input, button {
@@ -131,7 +134,7 @@
   </div>
 
   <script>
-  
+   
     const canvas = document.getElementById('space');
     const ctx = canvas.getContext('2d');
     let stars = [];
@@ -155,7 +158,7 @@
     function drawSpace(){
       ctx.clearRect(0,0,canvas.width,canvas.height);
 
-      
+  
       let gradient = ctx.createRadialGradient(
         canvas.width/2, canvas.height/2, 0,
         canvas.width/2, canvas.height/2, canvas.width/1.5
@@ -165,7 +168,7 @@
       ctx.fillStyle = gradient;
       ctx.fillRect(0,0,canvas.width,canvas.height);
 
-      
+    
       stars.forEach(s=>{
         ctx.beginPath();
         ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
@@ -182,7 +185,7 @@
     }
     drawSpace();
 
-    
+  
     let stage=0;
     const correctPassword = "люблю";
     function checkPassword(){
@@ -212,7 +215,7 @@
       noBtn.style.top=y+'px';
     }
 
- 
+   
     const reasons=[];
     for(let i=1;i<=101;i++){ reasons.push(`Причина №${i} ❤️`); }
     let index=0;
@@ -222,6 +225,7 @@
     function prevReason(){ index=(index-1+reasons.length)%reasons.length; showReason(); }
     function resetReason(){ index=0; showReason(); }
     showReason();
+
 
     function spawnHearts(){
       const heart=document.createElement('div');
@@ -237,3 +241,4 @@
   </script>
 </body>
 </html>
+
