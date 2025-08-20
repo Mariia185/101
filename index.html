@@ -1,234 +1,237 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Открытка для тебя</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
-
-    body {
-      margin: 0;
+    body,html {
+      margin:0;
+      padding:0;
+      height:100%;
+      overflow:hidden;
       font-family: Arial, sans-serif;
-      background: radial-gradient(circle at top, #000033, #000014);
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      overflow: hidden;
+      color:white;
     }
-    .stars {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      background: transparent;
-      overflow: hidden;
-      z-index: 0;
-    }
-    .star {
-      position: absolute;
-      background: white;
-      border-radius: 50%;
-      opacity: 0.8;
-      animation: twinkle 3s infinite ease-in-out;
-    }
-    @keyframes twinkle {
-      0%,100%{ opacity:0.2; }
-      50%{ opacity:1; }
+    canvas#space {
+      position:fixed;
+      top:0; left:0;
+      width:100%;
+      height:100%;
+      z-index:0;
     }
     .card {
-      width: 100%;
-      max-width: 500px;
-      background: rgba(0,0,30,0.9);
-      border-radius: 20px;
-      box-shadow: 0 0 30px rgba(255, 0, 80, 0.7);
-      overflow: hidden;
-      position: relative;
-      z-index: 2;
-      animation: glow 4s infinite alternate;
+      width:90%;
+      max-width:500px;
+      margin:auto;
+      background: rgba(0,0,30,0.75);
+      border-radius:20px;
+      box-shadow:0 0 25px rgba(255,0,150,0.7);
+      position:relative;
+      z-index:2;
+      text-align:center;
+      padding:20px;
+      animation:glow 3s infinite alternate;
     }
     @keyframes glow {
-      from { box-shadow: 0 0 15px rgba(255,0,80,0.3); }
-      to { box-shadow: 0 0 40px rgba(255,0,150,0.8); }
+      from {box-shadow:0 0 15px rgba(255,0,80,0.3);}
+      to {box-shadow:0 0 40px rgba(255,0,150,0.9);}
     }
-    .header, .footer {
-      padding: 10px;
-      text-align: center;
-      background: rgba(0,0,0,0.5);
-      font-family: 'Pacifico', cursive;
-      font-size: 22px;
-      text-shadow: 0 0 10px rgba(255,0,150,0.8);
-    }
-    .content {
-      padding: 20px;
-      position: relative;
-      min-height: 420px;
-    }
+    h2 { font-family:'Pacifico', cursive; text-shadow:0 0 10px rgba(255,150,200,0.9); }
     input, button {
-      padding: 10px;
-      border-radius: 8px;
-      border: none;
-      font-size: 16px;
-      transition: all 0.3s ease;
+      padding:10px;
+      border:none;
+      border-radius:8px;
+      font-size:16px;
+      margin:5px;
+      transition:0.3s;
     }
-    input {
-      width: 70%;
-      margin-right: 5px;
-    }
+    input {width:60%;}
     button {
-      cursor: pointer;
-      background: #ff0055;
-      color: #fff;
-      box-shadow: 0 0 10px rgba(255,0,150,0.7);
+      background:#ff0055;
+      color:#fff;
+      box-shadow:0 0 10px rgba(255,0,150,0.7);
+      cursor:pointer;
     }
     button:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 20px rgba(255,0,180,1);
+      transform:scale(1.1);
+      box-shadow:0 0 20px rgba(255,0,180,1);
     }
-    .stage { display: none; }
-    .stage.active { display: block; }
-    .no-btn {
-      position: absolute;
-      background: #222;
-      color: #fff;
-      padding: 8px 12px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(255,0,80,0.7);
-    }
+    .stage { display:none; }
+    .stage.active { display:block; }
     .reason-box {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid #444;
-      padding: 20px;
-      border-radius: 12px;
-      text-align: center;
-      min-height: 100px;
-      font-family: 'Pacifico', cursive;
-      font-size: 20px;
-      color: #ff99cc;
-      text-shadow: 0 0 5px rgba(255,0,100,0.8);
+      background:rgba(255,255,255,0.05);
+      padding:15px;
+      border-radius:12px;
+      min-height:100px;
+      font-family:'Pacifico', cursive;
+      font-size:20px;
+      color:#ff99cc;
+      text-shadow:0 0 8px rgba(255,0,150,0.8);
     }
-    .nav-buttons button { margin: 5px; }
-    @media (max-width: 600px) {
-      .content { padding: 15px; }
-      input { width: 60%; font-size: 14px; }
-      button { font-size: 14px; padding: 8px; }
-    }
-    .heart {
-      position: absolute;
-      font-size: 20px;
-      animation: floatUp 8s linear infinite;
-      opacity: 0.7;
-    }
-    @keyframes floatUp {
-      0% { transform: translateY(100vh) scale(0.8); opacity: 0; }
-      20% { opacity: 1; }
-      100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+    .no-btn {
+      position:absolute;
+      background:#222;
+      color:#fff;
+      padding:8px 12px;
+      border-radius:8px;
+      box-shadow:0 0 10px rgba(255,0,80,0.7);
+      cursor:pointer;
     }
     .love-note {
-      font-size: 12px;
-      text-align: center;
-      color: #ff99cc;
-      margin-top: 15px;
-      font-family: 'Pacifico', cursive;
-      text-shadow: 0 0 8px rgba(255,0,150,0.8);
+      margin-top:10px;
+      font-size:14px;
+      font-family:'Pacifico', cursive;
+      color:#ff99cc;
+      text-shadow:0 0 8px rgba(255,0,150,0.8);
+    }
+    .heart {
+      position:absolute;
+      font-size:20px;
+      animation:floatUp 8s linear infinite;
+      opacity:0.7;
+      z-index:1;
+    }
+    @keyframes floatUp {
+      0% { transform:translateY(100vh) scale(0.6); opacity:0; }
+      20% { opacity:1; }
+      100% { transform:translateY(-10vh) scale(1.3); opacity:0; }
     }
   </style>
 </head>
 <body>
-  <div class="stars"></div>
+  <canvas id="space"></canvas>
   <div class="card">
-    <div class="header">Для тебя 💋</div>
-    <div class="content">
-      <div id="stage0" class="stage active">
-        <h2>Введи пароль</h2>
-        <input type="password" id="password" placeholder="Введите..." />
-        <button onclick="checkPassword()">Открыть</button>
-        <p id="error" style="color: pink; display:none;">Неверный пароль ❤️</p>
-        <p style="font-size:12px;color:#aaa;">Подсказка: слово про любовь</p>
-        <div class="love-note">Сделано с любовью 💖</div>
-      </div>
-      <div id="stage1" class="stage">
-        <h2>Ты меня любишь?</h2>
-        <button onclick="showStage(2)">Да</button>
-        <button id="noBtn" class="no-btn">Нет</button>
-      </div>
-      <div id="stage2" class="stage">
-        <h2>101 причина, почему я тебя люблю</h2>
-        <div class="reason-box" id="reasonBox">1. Ты — мое утро</div>
-        <div class="nav-buttons">
-          <button onclick="prevReason()">←</button>
-          <button onclick="nextReason()">→</button>
-          <button onclick="resetReason()">С начала</button>
-        </div>
+    <div id="stage0" class="stage active">
+      <h2>Введи пароль</h2>
+      <input type="password" id="password" placeholder="Введите..." />
+      <button onclick="checkPassword()">Открыть</button>
+      <p id="error" style="color:pink;display:none;">Неверный пароль ❤️</p>
+      <p style="font-size:12px;color:#aaa;">Подсказка: слово про любовь</p>
+      <div class="love-note">Сделано с любовью 💖</div>
+    </div>
+    <div id="stage1" class="stage">
+      <h2>Ты меня любишь?</h2>
+      <button onclick="showStage(2)">Да</button>
+      <button id="noBtn" class="no-btn">Нет</button>
+    </div>
+    <div id="stage2" class="stage">
+      <h2>101 причина, почему я тебя люблю</h2>
+      <div class="reason-box" id="reasonBox"></div>
+      <div>
+        <button onclick="prevReason()">←</button>
+        <button onclick="nextReason()">→</button>
+        <button onclick="resetReason()">С начала</button>
       </div>
     </div>
-    <div class="footer">С ❤️</div>
   </div>
+
   <script>
-    let stage = 0;
+    
+    const canvas = document.getElementById('space');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+    function resizeCanvas(){
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    for(let i=0;i<200;i++){
+      stars.push({
+        x:Math.random()*canvas.width,
+        y:Math.random()*canvas.height,
+        r:Math.random()*2+0.5,
+        dx:(Math.random()-0.5)*0.2,
+        dy:(Math.random()-0.5)*0.2
+      });
+    }
+
+    function drawSpace(){
+      ctx.fillStyle = '#000010';
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+
+     
+      let gradient = ctx.createRadialGradient(
+        canvas.width/2, canvas.height/2, 0,
+        canvas.width/2, canvas.height/2, canvas.width/1.5
+      );
+      gradient.addColorStop(0,'rgba(100,0,150,0.2)');
+      gradient.addColorStop(1,'transparent');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+
+      
+      stars.forEach(s=>{
+        ctx.beginPath();
+        ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+        ctx.fillStyle='white';
+        ctx.fill();
+        s.x+=s.dx;
+        s.y+=s.dy;
+        if(s.x<0) s.x=canvas.width;
+        if(s.y<0) s.y=canvas.height;
+        if(s.x>canvas.width) s.x=0;
+        if(s.y>canvas.height) s.y=0;
+      });
+      requestAnimationFrame(drawSpace);
+    }
+    drawSpace();
+
+   
+    let stage=0;
     const correctPassword = "люблю";
     function checkPassword(){
-      const val = document.getElementById('password').value.trim().toLowerCase();
-      if(val === correctPassword){
-        showStage(1);
-      } else {
-        document.getElementById('error').style.display = 'block';
+      const val=document.getElementById('password').value.trim().toLowerCase();
+      if(val===correctPassword){ showStage(1); }
+      else {
+        document.getElementById('error').style.display='block';
         setTimeout(()=>document.getElementById('error').style.display='none',2000);
       }
     }
     function showStage(n){
       document.getElementById('stage'+stage).classList.remove('active');
-      stage = n;
+      stage=n;
       document.getElementById('stage'+stage).classList.add('active');
     }
-    const noBtn = document.getElementById('noBtn');
-    noBtn.addEventListener('mouseover', moveNoBtn);
-    noBtn.addEventListener('touchstart', moveNoBtn);
-    function moveNoBtn(){
-      const container = document.querySelector('.content');
-      const rect = container.getBoundingClientRect();
-      const x = Math.random() * (rect.width - 80);
-      const y = Math.random() * (rect.height - 50);
-      noBtn.style.left = x+"px";
-      noBtn.style.top = y+"px";
-    }
-    noBtn.addEventListener('click',()=>showStage(2));
 
-    const reasons = [
-      "Ты — мое утро","Ты — мое спокойствие","У тебя великолепная улыбка","Ты всегда рядом", "Ты понимаешь меня без слов", "Ты — моя опора", "Твои объятия лечат","Твой смех заразителен", "Ты вдохновляешь меня", "С тобой интересно", "Ты — мой навсегда"
-    ];
-    let index=0;
-    function showReason(){
-      document.getElementById('reasonBox').innerText=(index+1)+'. '+reasons[index];
+    const noBtn=document.getElementById('noBtn');
+    noBtn.addEventListener('mouseover',moveNoBtn);
+    noBtn.addEventListener('touchstart',moveNoBtn);
+    noBtn.addEventListener('click',()=>showStage(2));
+    function moveNoBtn(){
+      const container=document.querySelector('.card');
+      const rect=container.getBoundingClientRect();
+      const x=Math.random()*(rect.width-80);
+      const y=Math.random()*(rect.height-50);
+      noBtn.style.left=x+'px';
+      noBtn.style.top=y+'px';
     }
+
+    const reasons=[];
+    for(let i=1;i<=101;i++){ reasons.push(`Причина №${i} ❤️`); }
+    let index=0;
+    const reasonBox=document.getElementById('reasonBox');
+    function showReason(){ reasonBox.innerText=(index+1)+'. '+reasons[index]; }
     function nextReason(){ index=(index+1)%reasons.length; showReason(); }
     function prevReason(){ index=(index-1+reasons.length)%reasons.length; showReason(); }
     function resetReason(){ index=0; showReason(); }
+    showReason();
 
+    
     function spawnHearts(){
       const heart=document.createElement('div');
       heart.className='heart';
       heart.innerText=Math.random()>0.5?'❤':'💋';
       heart.style.left=Math.random()*100+'%';
-      heart.style.fontSize=(15+Math.random()*25)+'px';
-      heart.style.animationDuration=(5+Math.random()*5)+'s';
+      heart.style.fontSize=(15+Math.random()*30)+'px';
+      heart.style.animationDuration=(5+Math.random()*7)+'s';
       document.body.appendChild(heart);
       setTimeout(()=>heart.remove(),10000);
     }
-    setInterval(spawnHearts,700);
-
-    function spawnStars(){
-      const star=document.createElement('div');
-      star.className='star';
-      star.style.width=star.style.height=Math.random()*3+2+'px';
-      star.style.left=Math.random()*100+'%';
-      star.style.top=Math.random()*100+'%';
-      document.querySelector('.stars').appendChild(star);
-      setTimeout(()=>star.remove(),4000);
-    }
-    setInterval(spawnStars,300);
+    setInterval(spawnHearts,800);
   </script>
 </body>
 </html>
