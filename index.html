@@ -1,244 +1,283 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Открытка для тебя</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
-    body,html {
-      margin:0;
-      padding:0;
-      height:100%;
-      overflow:hidden;
-      font-family: Arial, sans-serif;
-      color:white;
-      background: linear-gradient(135deg, #000022, #1a0033);
-      display:flex;
-      justify-content:center;
-      align-items:center;
-    }
-    canvas#space {
-      position:fixed;
-      top:0; left:0;
-      width:100%;
-      height:100%;
-      z-index:0;
-    }
-    .card {
-      width:90%;
-      max-width:500px;
-      background: rgba(0,0,30,0.75);
-      border-radius:20px;
-      text-align:center;
-      padding:20px;
-      position:relative;
-      z-index:2;
-      animation: neonGlow 6s linear infinite;
-    }
-   
-    @keyframes neonGlow {
-      0%   { box-shadow: 0 0 25px rgba(255,0,150,0.8), 0 0 50px rgba(255,0,150,0.6); }
-      25%  { box-shadow: 0 0 25px rgba(255,50,50,0.9), 0 0 60px rgba(255,50,50,0.7); }
-      50%  { box-shadow: 0 0 25px rgba(150,0,255,0.9), 0 0 60px rgba(150,0,255,0.7); }
-      75%  { box-shadow: 0 0 25px rgba(0,150,255,0.9), 0 0 60px rgba(0,150,255,0.7); }
-      100% { box-shadow: 0 0 25px rgba(255,0,150,0.8), 0 0 50px rgba(255,0,150,0.6); }
-    }
-    h2 { font-family:'Pacifico', cursive; text-shadow:0 0 10px rgba(255,150,200,0.9); }
-    input, button {
-      padding:10px;
-      border:none;
-      border-radius:8px;
-      font-size:16px;
-      margin:5px;
-      transition:0.3s;
-    }
-    input {width:60%;}
-    button {
-      background:#ff0055;
-      color:#fff;
-      box-shadow:0 0 10px rgba(255,0,150,0.7);
-      cursor:pointer;
-    }
-    button:hover {
-      transform:scale(1.1);
-      box-shadow:0 0 20px rgba(255,0,180,1);
-    }
-    .stage { display:none; }
-    .stage.active { display:block; }
-    .reason-box {
-      background:rgba(255,255,255,0.05);
-      padding:15px;
-      border-radius:12px;
-      min-height:100px;
-      font-family:'Pacifico', cursive;
-      font-size:20px;
-      color:#ff99cc;
-      text-shadow:0 0 8px rgba(255,0,150,0.8);
-    }
-    .no-btn {
-      position:absolute;
-      background:#222;
-      color:#fff;
-      padding:8px 12px;
-      border-radius:8px;
-      box-shadow:0 0 10px rgba(255,0,80,0.7);
-      cursor:pointer;
-    }
-    .love-note {
-      margin-top:10px;
-      font-size:14px;
-      font-family:'Pacifico', cursive;
-      color:#ff99cc;
-      text-shadow:0 0 8px rgba(255,0,150,0.8);
-    }
-    .heart {
-      position:absolute;
-      font-size:20px;
-      animation:floatUp 8s linear infinite;
-      opacity:0.7;
-      z-index:1;
-    }
-    @keyframes floatUp {
-      0% { transform:translateY(100vh) scale(0.6); opacity:0; }
-      20% { opacity:1; }
-      100% { transform:translateY(-10vh) scale(1.3); opacity:0; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Любовная открытка</title>
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Segoe UI', sans-serif;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0b0c3f, #1a003d);
+    color: white;
+  }
+
+  /* Центральное окно */
+  .container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(10, 10, 20, 0.9);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 0 30px 5px rgba(255,0,150,0.7);
+    animation: glow 5s linear infinite;
+    max-width: 90%;
+    text-align: center;
+  }
+
+  @keyframes glow {
+    0% { box-shadow: 0 0 30px 5px #ff3c8d; }
+    25% { box-shadow: 0 0 30px 5px #ff0000; }
+    50% { box-shadow: 0 0 30px 5px #ff1493; }
+    75% { box-shadow: 0 0 30px 5px #ff69b4; }
+    100% { box-shadow: 0 0 30px 5px #ff3c8d; }
+  }
+
+  input {
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    margin-top: 20px;
+    width: 80%;
+    max-width: 250px;
+  }
+
+  button {
+    padding: 10px 20px;
+    margin-top: 20px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    background: #ff3c8d;
+    color: white;
+    font-weight: bold;
+  }
+
+  .page { display: none; }
+
+  /* Анимация сердечек и поцелуев */
+  .heart, .kiss {
+    position: absolute;
+    font-size: 20px;
+    animation: floatUp 6s linear infinite;
+    opacity: 0.7;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(0) scale(1); opacity: 0.7; }
+    50% { transform: translateY(-150px) scale(1.3); opacity: 1; }
+    100% { transform: translateY(-300px) scale(1); opacity: 0; }
+  }
+
+  /* Мобильная адаптация */
+  @media(max-width:600px){
+    .container { padding: 20px; }
+    input { width: 100%; }
+  }
+
+  .footer {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #ff69b4;
+  }
+
+</style>
 </head>
 <body>
-  <canvas id="space"></canvas>
-  <div class="card">
-    <div id="stage0" class="stage active">
-      <h2>Введи пароль</h2>
-      <input type="password" id="password" placeholder="Введите..." />
-      <button onclick="checkPassword()">Открыть</button>
-      <p id="error" style="color:pink;display:none;">Неверный пароль ❤️</p>
-      <p style="font-size:12px;color:#aaa;">Подсказка: слово про любовь</p>
-      <div class="love-note">Сделано с любовью 💖</div>
-    </div>
-    <div id="stage1" class="stage">
-      <h2>Ты меня любишь?</h2>
-      <button onclick="showStage(2)">Да</button>
-      <button id="noBtn" class="no-btn">Нет</button>
-    </div>
-    <div id="stage2" class="stage">
-      <h2>101 причина, почему я тебя люблю</h2>
-      <div class="reason-box" id="reasonBox"></div>
-      <div>
-        <button onclick="prevReason()">←</button>
-        <button onclick="nextReason()">→</button>
-        <button onclick="resetReason()">С начала</button>
-      </div>
-    </div>
+
+<!-- Анимация сердечек и поцелуев -->
+<div id="effects"></div>
+
+<!-- Страница с паролем -->
+<div id="page1" class="page" style="display:block;">
+  <div class="container">
+    <h2>Введите пароль</h2>
+    <input type="password" id="password" placeholder="Пароль">
+    <br>
+    <button onclick="checkPassword()">Войти</button>
+    <div class="footer">Сделано с любовью ❤️</div>
+    <div style="margin-top:10px; font-size:12px;">Подсказка: мой любимый цвет</div>
   </div>
+</div>
 
-  <script>
-   
-    const canvas = document.getElementById('space');
-    const ctx = canvas.getContext('2d');
-    let stars = [];
-    function resizeCanvas(){
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+<!-- Страница с вопросом -->
+<div id="page2" class="page">
+  <div class="container">
+    <h2>Ты меня любишь?</h2>
+    <button id="yesBtn" onclick="nextPage()">Да</button>
+    <button id="noBtn">Нет</button>
+  </div>
+</div>
+
+<!-- Страница с 101 причиной -->
+<div id="page3" class="page">
+  <div class="container">
+    <h2>101 причина, почему я тебя люблю</h2>
+    <p id="reason">Загрузка...</p>
+    <button onclick="nextReason()">Следующая</button>
+  </div>
+</div>
+
+<script>
+  // Анимация сердечек и поцелуев
+  const effectsContainer = document.getElementById('effects');
+  const symbols = ['❤️','💋','💖','💘','💕'];
+  setInterval(() => {
+    const span = document.createElement('span');
+    span.className = Math.random() > 0.5 ? 'heart' : 'kiss';
+    span.style.left = Math.random() * window.innerWidth + 'px';
+    span.style.fontSize = (15 + Math.random()*25) + 'px';
+    span.textContent = symbols[Math.floor(Math.random()*symbols.length)];
+    effectsContainer.appendChild(span);
+    setTimeout(() => effectsContainer.removeChild(span), 6000);
+  }, 300);
+
+  // Проверка пароля
+  function checkPassword() {
+    const pwd = document.getElementById('password').value;
+    if(pwd.toLowerCase() === 'розовый') { // пример пароля
+      document.getElementById('page1').style.display='none';
+      document.getElementById('page2').style.display='block';
+    } else {
+      alert('Неверный пароль');
     }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
+  }
 
-    for(let i=0;i<200;i++){
-      stars.push({
-        x:Math.random()*canvas.width,
-        y:Math.random()*canvas.height,
-        r:Math.random()*2+0.5,
-        dx:(Math.random()-0.5)*0.2,
-        dy:(Math.random()-0.5)*0.2
-      });
-    }
+  // Кнопка "Нет" убегает
+  const noBtn = document.getElementById('noBtn');
+  noBtn.addEventListener('mouseenter', () => {
+    const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+    const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+    noBtn.style.position = 'absolute';
+    noBtn.style.left = x + 'px';
+    noBtn.style.top = y + 'px';
+  });
 
-    function drawSpace(){
-      ctx.clearRect(0,0,canvas.width,canvas.height);
+  function nextPage() {
+    document.getElementById('page2').style.display='none';
+    document.getElementById('page3').style.display='block';
+  }
 
-  
-      let gradient = ctx.createRadialGradient(
-        canvas.width/2, canvas.height/2, 0,
-        canvas.width/2, canvas.height/2, canvas.width/1.5
-      );
-      gradient.addColorStop(0,'rgba(100,0,150,0.2)');
-      gradient.addColorStop(1,'transparent');
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0,0,canvas.width,canvas.height);
+  // 101 причина
+  const reasons = [
+    "1. Ты заставляешь меня улыбаться каждый день",
+    "2. Твои глаза как океан, в котором хочется утонуть",
+    "3. Твой смех делает мир ярче",
+    "4. Ты поддерживаешь меня в трудные моменты",
+    "5. Твои объятия самые тёплые",
+    "6. Ты вдохновляешь меня быть лучше",
+    "7. Ты понимаешь меня без слов",
+    "8. С тобой каждый день — приключение",
+    "9. Твой голос — моя любимая музыка",
+    "10. Ты делаешь обычное особенным",
+    "11. Твоя доброта не имеет границ",
+    "12. Ты умеешь слушать",
+    "13. Твои слова лечат душу",
+    "14. Ты всегда находишь способ рассмешить меня",
+    "15. Ты делаешь мою жизнь ярче",
+    "16. С тобой я чувствую себя в безопасности",
+    "17. Ты мой лучший друг",
+    "18. Ты веришь в меня даже когда я сомневаюсь",
+    "19. Ты умеешь любить искренне",
+    "20. Твой вкус в музыке и фильмах совпадает с моим",
+    "21. Ты всегда стараешься понять меня",
+    "22. Твои глаза сияют, когда ты счастлив",
+    "23. Ты умеешь прощать",
+    "24. Ты помнишь все мелочи о нас",
+    "25. Ты заботишься о моем настроении",
+    "26. Ты делаешь меня смелее",
+    "27. Ты вдохновляешь мечтать",
+    "28. Ты заставляешь меня верить в чудеса",
+    "29. Ты прекрасен(на) внутри и снаружи",
+    "30. Ты умеешь удивлять",
+    "31. Твои прикосновения согревают",
+    "32. Ты даришь радость",
+    "33. Ты умеешь делать комплименты",
+    "34. Ты терпелив(а) со мной",
+    "35. Ты мой свет в темноте",
+    "36. Ты моя опора",
+    "37. Ты умеешь быть честным(честной)",
+    "38. Ты веришь в нас",
+    "39. Ты умеешь ценить моменты",
+    "40. Ты всегда находишь что-то хорошее в людях",
+    "41. Ты вдохновляешь на творчество",
+    "42. Ты мой самый любимый человек",
+    "43. Твоя улыбка делает мой день",
+    "44. Ты делаешь маленькие вещи важными",
+    "45. Ты умеешь радоваться жизни",
+    "46. Ты принимаешь меня такой, какая я есть",
+    "47. Ты заботишься обо мне без напоминаний",
+    "48. Ты умеешь смеяться над собой",
+    "49. Ты умеешь любить без условий",
+    "50. Твоя энергия заряжает меня",
+    "51. Ты поддерживаешь мои мечты",
+    "52. Ты создаёшь уют вокруг себя",
+    "53. Ты умеешь вдохновлять",
+    "54. Твои объятия лечат",
+    "55. Ты мой уютный уголок",
+    "56. Ты умеешь слушать сердце",
+    "57. Ты мой светлый момент",
+    "58. Ты понимаешь мои шутки",
+    "59. Ты умеешь радовать меня",
+    "60. Ты мой источник счастья",
+    "61. Ты даешь силы",
+    "62. Ты умеешь удивлять приятно",
+    "63. Ты веришь в лучшее",
+    "64. Ты вдохновляешь доверять",
+    "65. Ты делаешь будни волшебными",
+    "66. Ты умеешь создавать настроение",
+    "67. Ты понимаешь мои чувства",
+    "68. Ты всегда рядом мысленно",
+    "69. Ты умеешь поддержать",
+    "70. Ты мой любимый человек в мире",
+    "71. Ты даришь тепло",
+    "72. Ты умеешь радоваться мелочам",
+    "73. Ты понимаешь мою душу",
+    "74. Ты умеешь удивлять добром",
+    "75. Ты даришь веру в себя",
+    "76. Ты мой компас",
+    "77. Ты помогаешь расти",
+    "78. Ты веришь в меня сильнее, чем я сама",
+    "79. Ты делаешь мир ярче",
+    "80. Ты умеешь ценить моменты вместе",
+    "81. Ты вдохновляешь на счастье",
+    "82. Ты всегда находишь правильные слова",
+    "83. Ты умеешь успокаивать",
+    "84. Ты даришь радость простым словам",
+    "85. Ты мой самый близкий человек",
+    "86. Ты умеешь делать приятное",
+    "87. Ты понимаешь мои мечты",
+    "88. Ты умеешь радовать сердце",
+    "89. Ты мой источник вдохновения",
+    "90. Ты даришь чувство счастья",
+    "91. Ты умеешь удивлять меня снова и снова",
+    "92. Ты даришь веру в любовь",
+    "93. Ты умеешь улыбаться вместе со мной",
+    "94. Ты создаёшь уют вокруг нас",
+    "95. Ты мой свет в серые дни",
+    "96. Ты умеешь делать день особенным",
+    "97. Ты даришь тепло сердца",
+    "98. Ты мой лучший компаньон",
+    "99. Ты умеешь делать жизнь красивой",
+    "100. Ты всегда в моём сердце",
+    "101. Ты причина моего счастья ❤️"
+  ];
 
-    
-      stars.forEach(s=>{
-        ctx.beginPath();
-        ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-        ctx.fillStyle='white';
-        ctx.fill();
-        s.x+=s.dx;
-        s.y+=s.dy;
-        if(s.x<0) s.x=canvas.width;
-        if(s.y<0) s.y=canvas.height;
-        if(s.x>canvas.width) s.x=0;
-        if(s.y>canvas.height) s.y=0;
-      });
-      requestAnimationFrame(drawSpace);
-    }
-    drawSpace();
+  let currentReason = 0;
+  const reasonElement = document.getElementById('reason');
+  reasonElement.textContent = reasons[currentReason];
 
-  
-    let stage=0;
-    const correctPassword = "люблю";
-    function checkPassword(){
-      const val=document.getElementById('password').value.trim().toLowerCase();
-      if(val===correctPassword){ showStage(1); }
-      else {
-        document.getElementById('error').style.display='block';
-        setTimeout(()=>document.getElementById('error').style.display='none',2000);
-      }
-    }
-    function showStage(n){
-      document.getElementById('stage'+stage).classList.remove('active');
-      stage=n;
-      document.getElementById('stage'+stage).classList.add('active');
-    }
+  function nextReason() {
+    currentReason = (currentReason + 1) % reasons.length;
+    reasonElement.textContent = reasons[currentReason];
+  }
+</script>
 
-    const noBtn=document.getElementById('noBtn');
-    noBtn.addEventListener('mouseover',moveNoBtn);
-    noBtn.addEventListener('touchstart',moveNoBtn);
-    noBtn.addEventListener('click',()=>showStage(2));
-    function moveNoBtn(){
-      const container=document.querySelector('.card');
-      const rect=container.getBoundingClientRect();
-      const x=Math.random()*(rect.width-80);
-      const y=Math.random()*(rect.height-50);
-      noBtn.style.left=x+'px';
-      noBtn.style.top=y+'px';
-    }
-
-   
-    const reasons=[];
-    for(let i=1;i<=101;i++){ reasons.push(`Причина №${i} ❤️`); }
-    let index=0;
-    const reasonBox=document.getElementById('reasonBox');
-    function showReason(){ reasonBox.innerText=(index+1)+'. '+reasons[index]; }
-    function nextReason(){ index=(index+1)%reasons.length; showReason(); }
-    function prevReason(){ index=(index-1+reasons.length)%reasons.length; showReason(); }
-    function resetReason(){ index=0; showReason(); }
-    showReason();
-
-
-    function spawnHearts(){
-      const heart=document.createElement('div');
-      heart.className='heart';
-      heart.innerText=Math.random()>0.5?'❤':'💋';
-      heart.style.left=Math.random()*100+'%';
-      heart.style.fontSize=(15+Math.random()*30)+'px';
-      heart.style.animationDuration=(5+Math.random()*7)+'s';
-      document.body.appendChild(heart);
-      setTimeout(()=>heart.remove(),10000);
-    }
-    setInterval(spawnHearts,800);
-  </script>
 </body>
 </html>
-
