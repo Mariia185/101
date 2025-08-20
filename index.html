@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Открытка для тебя</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #0a0a0a, #1a1a1a);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .card {
+      width: 100%;
+      max-width: 500px;
+      background: linear-gradient(135deg, #0f0f10, #141218);
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(255, 0, 80, 0.5);
+      overflow: hidden;
+    }
+    .header, .footer {
+      padding: 10px;
+      text-align: center;
+      background: rgba(0,0,0,0.5);
+    }
+    .content {
+      padding: 20px;
+      position: relative;
+      min-height: 400px;
+    }
+    input, button {
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+    }
+    input {
+      width: 70%;
+      margin-right: 5px;
+    }
+    button {
+      cursor: pointer;
+    }
+    .stage {
+      display: none;
+    }
+    .stage.active {
+      display: block;
+    }
+    .no-btn {
+      position: absolute;
+      background: #333;
+      color: #fff;
+    }
+    .reason-box {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid #444;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      min-height: 100px;
+    }
+    .nav-buttons button {
+      margin: 5px;
+    }
+    /* Responsive */
+    @media (max-width: 600px) {
+      .content { padding: 15px; }
+      input { width: 60%; font-size: 14px; }
+      button { font-size: 14px; padding: 8px; }
+    }
+    /* Floating hearts */
+    .heart {
+      position: absolute;
+      font-size: 20px;
+      animation: float 6s infinite;
+      opacity: 0.7;
+    }
+    @keyframes float {
+      0% { transform: translateY(100vh) scale(1); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="header">Тебе от меня 💋</div>
+    <div class="content">
+      <!-- Stage 0: Password -->
+      <div id="stage0" class="stage active">
+        <h2>Введи пароль, чтобы открыть открытку</h2>
+        <input type="password" id="password" placeholder="Введите слово..." />
+        <button onclick="checkPassword()">Открыть</button>
+        <p id="error" style="color: pink; display:none;">Неверный пароль ❤️</p>
+        <p style="font-size:12px;color:#aaa;">Подсказка: короткое слово, которое часто говорят...</p>
+      </div>
+      <!-- Stage 1: Question -->
+      <div id="stage1" class="stage">
+        <h2>Скажешь ли ты меня бросить?</h2>
+        <button onclick="alert('Ну ты и любопытный 😉')">Да</button>
+        <button id="noBtn" class="no-btn">Нет</button>
+        <p style="font-size:12px;color:#aaa;position:absolute;bottom:10px;">Попробуй поймать «Нет» — он убегает!</p>
+      </div>
+      <!-- Stage 2: Reasons -->
+      <div id="stage2" class="stage">
+        <h2>101 причина, почему я тебя люблю</h2>
+        <div class="reason-box" id="reasonBox">1. Ты — мое утро</div>
+        <div class="nav-buttons">
+          <button onclick="prevReason()">←</button>
+          <button onclick="nextReason()">Следующая</button>
+          <button onclick="resetReason()">С начала</button>
+        </div>
+      </div>
+    </div>
+    <div class="footer">Сделано с ❤️ · Темная тема</div>
+  </div>
+  <script>
+    let stage = 0;
+    const correctPassword = "люблю";
+    function checkPassword(){
+      const val = document.getElementById('password').value.trim().toLowerCase();
+      if(val === correctPassword){
+        showStage(1);
+      } else {
+        document.getElementById('error').style.display = 'block';
+        setTimeout(()=>document.getElementById('error').style.display='none',2000);
+      }
+    }
+    function showStage(n){
+      document.getElementById('stage'+stage).classList.remove('active');
+      stage = n;
+      document.getElementById('stage'+stage).classList.add('active');
+    }
+    // Moving No button
+    const noBtn = document.getElementById('noBtn');
+    noBtn.addEventListener('mouseover',()=>{
+      const container = document.querySelector('.content');
+      const rect = container.getBoundingClientRect();
+      const x = Math.random() * (rect.width - 80);
+      const y = Math.random() * (rect.height - 50);
+      noBtn.style.left = x+"px";
+      noBtn.style.top = y+"px";
+    });
+
+    // Reasons
+    const reasons = [
+      "Ты — мое утро","Ты — мое спокойствие","У тебя великолепная улыбка","Ты всегда рядом", "Ты понимаешь меня без слов", "Ты — моя опора", "Твои объятия лечат","Твой смех заразителен", "Ты вдохновляешь меня", "С тобой интересно", /* ... допиши до 101 ... */ "Ты — мой навсегда"
+    ];
+    let index=0;
+    function showReason(){
+      document.getElementById('reasonBox').innerText=(index+1)+'. '+reasons[index];
+    }
+    function nextReason(){ index=(index+1)%reasons.length; showReason(); }
+    function prevReason(){ index=(index-1+reasons.length)%reasons.length; showReason(); }
+    function resetReason(){ index=0; showReason(); }
+    // Floating hearts generation
+    for(let i=0;i<15;i++){
+      const heart=document.createElement('div');
+      heart.className='heart';
+      heart.innerText = (i%3===0? '💋':'❤');
+      heart.style.left=Math.random()*100+'%';
+      heart.style.animationDuration=(5+Math.random()*5)+'s';
+      document.body.appendChild(heart);
+    }
+  </script>
+</body>
+</html>
