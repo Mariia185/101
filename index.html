@@ -13,6 +13,10 @@
       overflow:hidden;
       font-family: Arial, sans-serif;
       color:white;
+      background: linear-gradient(135deg, #000022, #1a0033); 
+      display:flex;
+      justify-content:center;
+      align-items:center;
     }
     canvas#space {
       position:fixed;
@@ -24,15 +28,14 @@
     .card {
       width:90%;
       max-width:500px;
-      margin:auto;
       background: rgba(0,0,30,0.75);
       border-radius:20px;
       box-shadow:0 0 25px rgba(255,0,150,0.7);
-      position:relative;
-      z-index:2;
       text-align:center;
       padding:20px;
       animation:glow 3s infinite alternate;
+      position:relative;
+      z-index:2;
     }
     @keyframes glow {
       from {box-shadow:0 0 15px rgba(255,0,80,0.3);}
@@ -128,7 +131,7 @@
   </div>
 
   <script>
-    
+  
     const canvas = document.getElementById('space');
     const ctx = canvas.getContext('2d');
     let stars = [];
@@ -150,10 +153,9 @@
     }
 
     function drawSpace(){
-      ctx.fillStyle = '#000010';
-      ctx.fillRect(0,0,canvas.width,canvas.height);
+      ctx.clearRect(0,0,canvas.width,canvas.height);
 
-     
+      
       let gradient = ctx.createRadialGradient(
         canvas.width/2, canvas.height/2, 0,
         canvas.width/2, canvas.height/2, canvas.width/1.5
@@ -180,7 +182,7 @@
     }
     drawSpace();
 
-   
+    
     let stage=0;
     const correctPassword = "люблю";
     function checkPassword(){
@@ -210,6 +212,7 @@
       noBtn.style.top=y+'px';
     }
 
+ 
     const reasons=[];
     for(let i=1;i<=101;i++){ reasons.push(`Причина №${i} ❤️`); }
     let index=0;
@@ -220,7 +223,6 @@
     function resetReason(){ index=0; showReason(); }
     showReason();
 
-    
     function spawnHearts(){
       const heart=document.createElement('div');
       heart.className='heart';
