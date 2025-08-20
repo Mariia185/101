@@ -1,173 +1,286 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Открытка для тебя</title>
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(to bottom, #0a0a0a, #1a1a1a);
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
+    :root{
+      --bg1:#0a0a0a;
+      --bg2:#141218;
+      --accent1:#ff3b6f;
+      --accent2:#ff6fa3;
+      --muted:#9aa0a6;
     }
-    .card {
-      width: 100%;
-      max-width: 500px;
-      background: linear-gradient(135deg, #0f0f10, #141218);
-      border-radius: 20px;
-      box-shadow: 0 0 20px rgba(255, 0, 80, 0.5);
-      overflow: hidden;
+    *{box-sizing:border-box}
+    body{
+      margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
+      background:linear-gradient(180deg,var(--bg1),#070708 60%);
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:#fff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:20px;
     }
-    .header, .footer {
-      padding: 10px;
-      text-align: center;
-      background: rgba(0,0,0,0.5);
+
+    .card{
+      width:100%;max-width:720px;border-radius:18px;overflow:hidden;box-shadow:0 10px 40px rgba(255,50,120,0.07);
+      background:linear-gradient(135deg,var(--bg2),#0c0b0d);
+      border:1px solid rgba(255,255,255,0.03);
     }
-    .content {
-      padding: 20px;
-      position: relative;
-      min-height: 400px;
+    .header{
+      display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid rgba(255,255,255,0.03)
     }
-    input, button {
-      padding: 10px;
-      border-radius: 8px;
-      border: none;
-      font-size: 16px;
-    }
-    input {
-      width: 70%;
-      margin-right: 5px;
-    }
-    button {
-      cursor: pointer;
-    }
-    .stage {
-      display: none;
-    }
-    .stage.active {
-      display: block;
-    }
-    .no-btn {
-      position: absolute;
-      background: #333;
-      color: #fff;
-    }
-    .reason-box {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid #444;
-      padding: 20px;
-      border-radius: 12px;
-      text-align: center;
-      min-height: 100px;
-    }
-    .nav-buttons button {
-      margin: 5px;
-    }
+    .title{font-weight:600}
+    .tabs{display:flex;gap:8px}
+    .tabs button{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:6px 10px;border-radius:8px;color:var(--muted);font-size:13px;cursor:pointer}
+    .content{position:relative;padding:26px;min-height:420px}
+
+    /* floating hearts won't block clicks */
+    .heart{position:absolute;font-size:20px;pointer-events:none;opacity:0.85;text-shadow:0 6px 18px rgba(0,0,0,0.6)}
+
+    .stage{display:none}
+    .stage.active{display:block;animation:fadeIn .28s ease both}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+    /* Stage 0 - password */
+    .row{display:flex;gap:10px;align-items:center}
+    input[type=password]{flex:1;padding:12px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);color:#fff;font-size:16px}
+    button.primary{background:linear-gradient(90deg,var(--accent1),var(--accent2));border:none;color:#fff;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:600}
+    .muted{color:var(--muted);font-size:13px;margin-top:12px}
+    .error{color:#ff9fb6;margin-top:8px}
+
+    /* Stage 1 - question */
+    .question-area{height:260px;border-radius:12px;padding:18px;border:1px solid rgba(255,255,255,0.03);background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));position:relative;overflow:hidden}
+    .big-btn{padding:12px 18px;border-radius:12px;border:none;cursor:pointer;font-weight:600}
+    .yes{background:linear-gradient(90deg,var(--accent2),var(--accent1));color:#fff}
+    .no-btn{position:absolute;padding:10px 16px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:#1b1b1b;color:#fff;cursor:pointer}
+    .hint{position:absolute;left:14px;bottom:12px;color:var(--muted);font-size:13px}
+
+    /* Stage 2 - reasons */
+    .reason-box{min-height:140px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);padding:18px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);display:flex;align-items:center;justify-content:center;text-align:center;font-size:18px;font-weight:600}
+    .controls{display:flex;gap:8px;justify-content:center;margin-top:14px}
+    .controls button{padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff;cursor:pointer}
+
+    .footer{padding:12px 18px;border-top:1px solid rgba(255,255,255,0.03);font-size:13px;color:var(--muted);display:flex;justify-content:space-between}
+
     /* Responsive */
-    @media (max-width: 600px) {
-      .content { padding: 15px; }
-      input { width: 60%; font-size: 14px; }
-      button { font-size: 14px; padding: 8px; }
-    }
-    /* Floating hearts */
-    .heart {
-      position: absolute;
-      font-size: 20px;
-      animation: float 6s infinite;
-      opacity: 0.7;
-    }
-    @keyframes float {
-      0% { transform: translateY(100vh) scale(1); opacity: 0; }
-      50% { opacity: 1; }
-      100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+    @media (max-width:520px){
+      .content{padding:18px;min-height:480px}
+      .reason-box{font-size:16px;padding:14px}
+      .header{padding:12px}
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <div class="header">Тебе от меня 💋</div>
-    <div class="content">
-      <!-- Stage 0: Password -->
-      <div id="stage0" class="stage active">
-        <h2>Введи пароль, чтобы открыть открытку</h2>
-        <input type="password" id="password" placeholder="Введите слово..." />
-        <button onclick="checkPassword()">Открыть</button>
-        <p id="error" style="color: pink; display:none;">Неверный пароль ❤️</p>
-        <p style="font-size:12px;color:#aaa;">Подсказка: короткое слово, которое часто говорят...</p>
-      </div>
-      <!-- Stage 1: Question -->
-      <div id="stage1" class="stage">
-        <h2>Скажешь ли ты меня бросить?</h2>
-        <button onclick="alert('Ну ты и любопытный 😉')">Да</button>
-        <button id="noBtn" class="no-btn">Нет</button>
-        <p style="font-size:12px;color:#aaa;position:absolute;bottom:10px;">Попробуй поймать «Нет» — он убегает!</p>
-      </div>
-      <!-- Stage 2: Reasons -->
-      <div id="stage2" class="stage">
-        <h2>101 причина, почему я тебя люблю</h2>
-        <div class="reason-box" id="reasonBox">1. Ты — мое утро</div>
-        <div class="nav-buttons">
-          <button onclick="prevReason()">←</button>
-          <button onclick="nextReason()">Следующая</button>
-          <button onclick="resetReason()">С начала</button>
-        </div>
+  <div class="card" role="application">
+    <div class="header">
+      <div class="title">Тебе от меня 💋</div>
+      <div class="tabs">
+        <button id="tab0">Пароль</button>
+        <button id="tab1">Вопрос</button>
+        <button id="tab2">101 причина</button>
       </div>
     </div>
-    <div class="footer">Сделано с ❤️ · Темная тема</div>
-  </div>
-  <script>
-    let stage = 0;
-    const correctPassword = "люблю";
-    function checkPassword(){
-      const val = document.getElementById('password').value.trim().toLowerCase();
-      if(val === correctPassword){
-        showStage(1);
-      } else {
-        document.getElementById('error').style.display = 'block';
-        setTimeout(()=>document.getElementById('error').style.display='none',2000);
-      }
-    }
-    function showStage(n){
-      document.getElementById('stage'+stage).classList.remove('active');
-      stage = n;
-      document.getElementById('stage'+stage).classList.add('active');
-    }
-    // Moving No button
-    const noBtn = document.getElementById('noBtn');
-    noBtn.addEventListener('mouseover',()=>{
-      const container = document.querySelector('.content');
-      const rect = container.getBoundingClientRect();
-      const x = Math.random() * (rect.width - 80);
-      const y = Math.random() * (rect.height - 50);
-      noBtn.style.left = x+"px";
-      noBtn.style.top = y+"px";
-    });
 
-    // Reasons
-    const reasons = [
-      "Ты — мое утро","Ты — мое спокойствие","У тебя великолепная улыбка","Ты всегда рядом", "Ты понимаешь меня без слов", "Ты — моя опора", "Твои объятия лечат","Твой смех заразителен", "Ты вдохновляешь меня", "С тобой интересно", /* ... допиши до 101 ... */ "Ты — мой навсегда"
-    ];
-    let index=0;
-    function showReason(){
-      document.getElementById('reasonBox').innerText=(index+1)+'. '+reasons[index];
-    }
-    function nextReason(){ index=(index+1)%reasons.length; showReason(); }
-    function prevReason(){ index=(index-1+reasons.length)%reasons.length; showReason(); }
-    function resetReason(){ index=0; showReason(); }
-    // Floating hearts generation
-    for(let i=0;i<15;i++){
-      const heart=document.createElement('div');
-      heart.className='heart';
-      heart.innerText = (i%3===0? '💋':'❤');
-      heart.style.left=Math.random()*100+'%';
-      heart.style.animationDuration=(5+Math.random()*5)+'s';
-      document.body.appendChild(heart);
-    }
+    <div class="content" id="content">
+      <!-- floating hearts (will be generated by JS) -->
+
+      <!-- Stage 0: password -->
+      <div id="stage0" class="stage active" aria-hidden="false">
+        <h2>Введи пароль, чтобы открыть открытку</h2>
+        <div style="height:14px"></div>
+        <div class="row">
+          <input id="password" type="password" placeholder="Введите слово..." aria-label="Пароль" />
+          <button id="openBtn" class="primary">Открыть</button>
+        </div>
+        <div id="error" class="error" style="display:none">Неверный пароль ❤️</div>
+        <div class="muted">Подсказка: короткое слово, которое часто говорят...</div>
+      </div>
+
+      <!-- Stage 1: question -->
+      <div id="stage1" class="stage" aria-hidden="true">
+        <h2>Скажешь ли ты меня бросить?</h2>
+        <div style="height:12px"></div>
+        <div class="question-area" id="qArea">
+          <div style="display:flex;gap:12px;align-items:center;justify-content:center;height:100%">
+            <button id="yesBtn" class="big-btn yes">Да</button>
+            <!-- "Нет" - убегающая кнопка -->
+            <button id="noBtn" class="no-btn" aria-label="Нет">Нет</button>
+          </div>
+          <div class="hint">Попробуй поймать «Нет» — он убегает!</div>
+        </div>
+      </div>
+
+      <!-- Stage 2: reasons -->
+      <div id="stage2" class="stage" aria-hidden="true">
+        <h2>101 причина, почему я тебя люблю</h2>
+        <div style="height:12px"></div>
+        <div class="reason-box" id="reasonBox">1. Ты — мое утро</div>
+        <div class="controls">
+          <button id="prevBtn">←</button>
+          <button id="nextBtn" class="primary">Следующая</button>
+          <button id="resetBtn">С начала</button>
+        </div>
+        <div style="height:8px"></div>
+        <div class="muted" id="counter">Всего: 101 причин</div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <div>Сделано с ❤️</div>
+      <div>Темная тема · Адаптивно</div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      // --- state ---
+      let currentStage = 0; // 0,1,2
+      const correctPassword = 'люблю';
+
+      // elements
+      const stages = [document.getElementById('stage0'), document.getElementById('stage1'), document.getElementById('stage2')];
+      const tab0 = document.getElementById('tab0');
+      const tab1 = document.getElementById('tab1');
+      const tab2 = document.getElementById('tab2');
+
+      function showStage(n){
+        stages.forEach((s, i)=>{
+          if(i===n){ s.classList.add('active'); s.setAttribute('aria-hidden','false'); } else { s.classList.remove('active'); s.setAttribute('aria-hidden','true'); }
+        });
+        currentStage = n;
+        // position No button when showing question
+        if(n===1) placeNoButtonCenter();
+      }
+
+      tab0.addEventListener('click', ()=>showStage(0));
+      tab1.addEventListener('click', ()=>showStage(1));
+      tab2.addEventListener('click', ()=>showStage(2));
+
+      // --- Password logic ---
+      const openBtn = document.getElementById('openBtn');
+      const passwordInput = document.getElementById('password');
+      const errorEl = document.getElementById('error');
+      openBtn.addEventListener('click', tryOpen);
+      passwordInput.addEventListener('keydown', function(e){ if(e.key==='Enter') tryOpen(); });
+
+      function tryOpen(){
+        const v = (passwordInput.value||'').trim().toLowerCase();
+        if(v===correctPassword){
+          errorEl.style.display='none';
+          showStage(1);
+        } else {
+          errorEl.style.display='block';
+          setTimeout(()=>errorEl.style.display='none',1600);
+        }
+      }
+
+      // --- No button (evasive) ---
+      const noBtn = document.getElementById('noBtn');
+      const yesBtn = document.getElementById('yesBtn');
+      const qArea = document.getElementById('qArea');
+
+      // ensure absolute positioning base
+      noBtn.style.position = 'absolute';
+      // small throttle to avoid too many movements at once
+      let moving = false;
+      function placeNoButtonCenter(){
+        // center relative to content area
+        noBtn.style.left = '50%';
+        noBtn.style.top = '60%';
+        noBtn.style.transform = 'translate(-50%,-50%)';
+      }
+
+      function moveNoRandom(){
+        if(moving) return; moving = true;
+        const container = document.querySelector('.content');
+        const rect = container.getBoundingClientRect();
+        const btnRect = noBtn.getBoundingClientRect();
+        // calculate available area inside content
+        const padding = 12;
+        const maxX = Math.max(0, rect.width - btnRect.width - padding*2);
+        const maxY = Math.max(0, rect.height - btnRect.height - padding*2);
+        const x = Math.floor(padding + Math.random()*maxX);
+        const y = Math.floor(padding + Math.random()*maxY);
+        // use px positioning
+        noBtn.style.left = x + 'px';
+        noBtn.style.top = y + 'px';
+        noBtn.style.transform = 'none';
+        // short cooldown before it can move again
+        setTimeout(()=>{ moving = false; }, 250);
+      }
+
+      // For mouse users
+      noBtn.addEventListener('mouseenter', moveNoRandom);
+      // For touch users
+      noBtn.addEventListener('touchstart', function(e){ e.preventDefault(); moveNoRandom(); });
+
+      // If user actually clicks No (rare), show a sweet message then go to reasons
+      noBtn.addEventListener('click', function(){
+        alert('Ха-ха, нет — ты не убежишь! ❤️');
+        showStage(2);
+      });
+
+      // Yes button goes to reasons
+      yesBtn.addEventListener('click', function(){
+        showStage(2);
+      });
+
+      // --- Reasons logic ---
+      const reasons = [
+        "Ты — мое утро","Ты — мое спокойствие","У тебя великолепная улыбка","Ты всегда рядом","Ты понимаешь меня без слов","Ты — моя опора","Твои объятия лечат","Твой смех заразителен","Ты вдохновляешь меня","С тобой интересно",
+        "Ты терпелив","Ты заботлив","Ты честен со мной","Ты поддерживаешь мои мечты","Ты — мой лучший друг","Ты умеешь удивлять","Ты делаешь меня лучше","Ты любишь меня таким, какой я есть","Ты помнишь мелочи","Ты даришь безопасность",
+        "Ты — моё солнце","Твои поцелуи сладкие","Ты меня защищаешь","Ты внимателен","Ты умный и мудрый","Ты ценишь моё время","Ты художественный(ая) в мелочах","Твоя кожа пахнет домом","Ты поддерживаешь моё настроение","Ты умеешь слушать",
+        "Ты творчески решаешь проблемы","Ты романтичен","С тобой хочу стареть","Ты мой спутник в приключениях","Ты делаешь простые дни особенными","Ты гордишь меня","Ты даёшь мне свободу быть собой","Ты любишь меня искренне","Ты даришь вкус жизни","У тебя доброе сердце",
+        "Ты всегда находишь свет в темноте","Ты любишь мои недостатки","Твои глаза — моя карта","Ты смешной в нужный момент","Ты внимателен к деталям","Ты — мой приоритет","Ты экономишь время и силы для нас","Ты умеешь просить прощения","Ты верен своим словам","Ты даешь надежду",
+        "Ты — моя страсть","Ты — моя звезда ночью","Ты приводишь меня в порядок","Ты умеешь мечтать вместе","Твои объятия тёплые","Ты сладко дуешь на раны","Ты — лучшая версия себя ради нас","Ты приходишь первым в беде","Твой голос успокаивает","Ты помогаешь расти",
+        "Ты — мой дом и вектор","Твоя честность ценна","Ты — моя музыка","Ты даёшь свободу ошибаться","Ты идеален в несовершенстве","Ты создаёшь уют","С тобой любой фильм — хит","Ты любишь моих друзей","Ты доверяешь мне","Ты принимаешь мою семью",
+        "Ты даришь сюрпризы","Ты любишь меня утром и ночью","Ты — добрый и сильный","Ты знаешь мой любимый кофе","Ты говоришь правду мягко","Ты и есть мой счастливый случай","Ты умеешь танцевать в кухне","Ты помогаешь мне смеяться над собой","Ты честен с чувствами","Ты не сдерживаешь мечты",
+        "Ты — причина моих планов","Ты поддерживаешь мое творчество","Твои волосы пахнут летом","Ты моего сердца архитектор","Ты делаешь меня смелее","Ты веришь в меня","Ты любишь маленькие прогулки","Ты — мой уютный вечер","Твои поцелуи красят мир","Ты — самый родной человек",
+        "Ты ценишь честность","Ты даришь искренность","Ты — мой идеальный партнер","Ты наполняешь пустые дни смыслом","Ты умеешь держать баланс","Ты — цвет в моей палитре","Ты даришь мне приключения","Ты — мой компас","Ты поддерживаешь мою независимость","Ты приглашаешь меня в свою жизнь",
+        "Ты обаятельно неловок"
+      ]; // ровно 101 причин
+
+      let idx = 0;
+      const reasonBox = document.getElementById('reasonBox');
+      const nextBtn = document.getElementById('nextBtn');
+      const prevBtn = document.getElementById('prevBtn');
+      const resetBtn = document.getElementById('resetBtn');
+      const counter = document.getElementById('counter');
+
+      function renderReason(){
+        reasonBox.textContent = (idx+1) + '. ' + reasons[idx];
+        counter.textContent = 'Всего: ' + reasons.length + ' причин — ' + (idx+1) + '/' + reasons.length;
+      }
+      nextBtn.addEventListener('click', function(){ idx = (idx + 1) % reasons.length; renderReason(); });
+      prevBtn.addEventListener('click', function(){ idx = (idx - 1 + reasons.length) % reasons.length; renderReason(); });
+      resetBtn.addEventListener('click', function(){ idx = 0; renderReason(); });
+
+      // allow keyboard arrows when on stage2
+      document.addEventListener('keydown', function(e){ if(currentStage===2){ if(e.key==='ArrowRight') nextBtn.click(); if(e.key==='ArrowLeft') prevBtn.click(); } });
+
+      // initial render
+      renderReason();
+
+      // --- floating hearts ---
+      const card = document.querySelector('.card');
+      for(let i=0;i<14;i++){
+        const el = document.createElement('div');
+        el.className='heart';
+        el.textContent = (i%3===0?'💋':'❤');
+        el.style.left = Math.random()*100 + '%';
+        el.style.top = (60 + Math.random()*40) + '%';
+        el.style.fontSize = (14 + Math.random()*18) + 'px';
+        el.style.animation = 'float ' + (6 + Math.random()*6) + 's linear infinite';
+        el.style.opacity = 0.6 + Math.random()*0.4;
+        card.appendChild(el);
+      }
+
+      // until now everything runs inside DOMContentLoaded
+
+    });
   </script>
 </body>
 </html>
