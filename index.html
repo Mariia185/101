@@ -1,348 +1,364 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Открытка для тебя</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
-    body,html {
-      margin:0;
-      padding:0;
-      height:100%;
-      overflow:hidden;
-      font-family: Arial, sans-serif;
-      color:white;
-      background: linear-gradient(135deg, #000022, #1a0033);
-      display:flex;
-      justify-content:center;
-      align-items:center;
-    }
-    canvas#space {
-      position:fixed;
-      top:0; left:0;
-      width:100%;
-      height:100%;
-      z-index:0;
-    }
-    .card {
-      width:90%;
-      max-width:500px;
-      background: rgba(0,0,30,0.75);
-      border-radius:20px;
-      text-align:center;
-      padding:20px;
-      position:relative;
-      z-index:2;
-      animation: neonGlow 6s linear infinite;
-    }
-    /* Переливающаяся подсветка */
-    @keyframes neonGlow {
-      0%   { box-shadow: 0 0 25px rgba(255,0,150,0.8), 0 0 50px rgba(255,0,150,0.6); }
-      25%  { box-shadow: 0 0 25px rgba(255,50,50,0.9), 0 0 60px rgba(255,50,50,0.7); }
-      50%  { box-shadow: 0 0 25px rgba(150,0,255,0.9), 0 0 60px rgba(150,0,255,0.7); }
-      75%  { box-shadow: 0 0 25px rgba(0,150,255,0.9), 0 0 60px rgba(0,150,255,0.7); }
-      100% { box-shadow: 0 0 25px rgba(255,0,150,0.8), 0 0 50px rgba(255,0,150,0.6); }
-    }
-    h2 { font-family:'Pacifico', cursive; text-shadow:0 0 10px rgba(255,150,200,0.9); }
-    input, button {
-      padding:10px;
-      border:none;
-      border-radius:8px;
-      font-size:16px;
-      margin:5px;
-      transition:0.3s;
-    }
-    input {width:60%;}
-    button {
-      background:#ff0055;
-      color:#fff;
-      box-shadow:0 0 10px rgba(255,0,150,0.7);
-      cursor:pointer;
-    }
-    button:hover {
-      transform:scale(1.1);
-      box-shadow:0 0 20px rgba(255,0,180,1);
-    }
-    .stage { display:none; }
-    .stage.active { display:block; }
-    .reason-box {
-      background:rgba(255,255,255,0.05);
-      padding:15px;
-      border-radius:12px;
-      min-height:100px;
-      font-family:'Pacifico', cursive;
-      font-size:20px;
-      color:#ff99cc;
-      text-shadow:0 0 8px rgba(255,0,150,0.8);
-    }
-    .no-btn {
-      position:absolute;
-      background:#222;
-      color:#fff;
-      padding:8px 12px;
-      border-radius:8px;
-      box-shadow:0 0 10px rgba(255,0,80,0.7);
-      cursor:pointer;
-    }
-    .love-note {
-      margin-top:10px;
-      font-size:14px;
-      font-family:'Pacifico', cursive;
-      color:#ff99cc;
-      text-shadow:0 0 8px rgba(255,0,150,0.8);
-    }
-    .heart {
-      position:absolute;
-      font-size:20px;
-      animation:floatUp 8s linear infinite;
-      opacity:0.7;
-      z-index:1;
-    }
-    @keyframes floatUp {
-      0% { transform:translateY(100vh) scale(0.6); opacity:0; }
-      20% { opacity:1; }
-      100% { transform:translateY(-10vh) scale(1.3); opacity:0; }
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Открытка для тебя</title>
+<style>
+  /* Базовые стили */
+  html, body{
+    margin:0; padding:0; height:100%; overflow:hidden;
+    font-family: 'Segoe UI', system-ui, -apple-system, Arial, sans-serif;
+    background:#000; color:#fff;
+  }
+
+  /* Космос: canvas со звёздами */
+  #space{
+    position:fixed; inset:0; z-index:-3; width:100%; height:100%;
+  }
+
+  /* Мягкая туманность поверх звёзд */
+  #nebula{
+    position:fixed; z-index:-2;
+    width:200%; height:200%; top:-50%; left:-50%;
+    background:
+      radial-gradient(circle at 25% 30%, rgba(0,120,255,0.25), transparent 60%),
+      radial-gradient(circle at 70% 70%, rgba(200,0,255,0.20), transparent 60%),
+      radial-gradient(circle at 55% 80%, rgba(0,200,255,0.22), transparent 60%),
+      radial-gradient(circle at 80% 25%, rgba(150,0,200,0.18), transparent 60%);
+    animation: nebulaMove 60s linear infinite alternate;
+    filter: blur(2px) saturate(120%);
+  }
+  @keyframes nebulaMove{
+    0%   { transform:translate(0,0) scale(1);    filter:hue-rotate(0deg) saturate(120%); }
+    50%  { transform:translate(120px,-140px) scale(1.18); filter:hue-rotate(120deg) saturate(140%); }
+    100% { transform:translate(0,0) scale(1);    filter:hue-rotate(240deg) saturate(120%); }
+  }
+
+  /* Центральное окно */
+  .container{
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    background: rgba(10,10,20,0.85);
+    padding:28px; border-radius:20px;
+    max-width:90%; width:520px; text-align:center; z-index:2;
+    animation: neonGlow 6s linear infinite;
+  }
+  @keyframes neonGlow{
+    0%   { box-shadow: 0 0 28px 6px rgba(255,60,141,0.9); }
+    25%  { box-shadow: 0 0 32px 8px rgba(255,0,0,0.85); }
+    50%  { box-shadow: 0 0 36px 9px rgba(255,20,147,0.9); }
+    75%  { box-shadow: 0 0 32px 8px rgba(0,200,255,0.85); }
+    100% { box-shadow: 0 0 28px 6px rgba(255,60,141,0.9); }
+  }
+
+  /* Заголовки — белые */
+  h1, h2, h3, h4, h5, h6{
+    color:#fff;
+    margin:0 0 12px;
+    text-shadow: 0 0 10px rgba(255,255,255,0.25);
+    line-height:1.2;
+  }
+  .site-title{ font-size:28px; margin-bottom:10px; }
+  .page-title{ font-size:22px; margin-bottom:18px; }
+
+  /* Формы и кнопки */
+  input{
+    width:80%; max-width:260px;
+    padding:10px 12px; border-radius:10px; border:none; outline:none;
+    background:#0f1030; color:#fff;
+    box-shadow: inset 0 0 8px rgba(255,255,255,0.08);
+  }
+  button{
+    padding:10px 20px; margin-top:14px;
+    border:none; border-radius:10px; cursor:pointer;
+    background:#ff3c8d; color:#fff; font-weight:600; transition:.25s;
+    box-shadow:0 0 12px rgba(255,0,150,0.6);
+  }
+  button:hover{ transform: translateY(-1px) scale(1.03); }
+
+  .page{ display:none; }
+  .footer{
+    margin-top:14px; font-size:14px; color:#ff9ad0;
+    text-shadow:0 0 8px rgba(255,0,150,0.6);
+  }
+  .hint{ margin-top:8px; font-size:12px; color:#cfd3ff; opacity:.9; }
+
+  /* Летающие снизу-вверх эмодзи (белые, синие сердца и поцелуи) */
+  #effects{ position:fixed; inset:0; z-index:-1; pointer-events:none; }
+  .emoji{
+    position:absolute; bottom:-50px; left:0;
+    font-size:20px; opacity:.9;
+    animation: floatUp 8s linear forwards;
+    filter: drop-shadow(0 0 6px rgba(160,200,255,0.8));
+  }
+  @keyframes floatUp{
+    0%   { transform:translateY(0) scale(.9); opacity:.85; }
+    50%  { transform:translateY(-45vh) scale(1.2); opacity:1; }
+    100% { transform:translateY(-92vh) scale(1);   opacity:0; }
+  }
+
+  /* Мобильная адаптация */
+  @media (max-width:600px){
+    .container{ width:92%; padding:22px; }
+    .site-title{ font-size:24px; }
+    .page-title{ font-size:20px; }
+    input{ width:100%; }
+  }
+</style>
 </head>
 <body>
-  <canvas id="space"></canvas>
-  <div class="card">
-    <div id="stage0" class="stage active">
-      <h2>Введи пароль</h2>
-      <input type="password" id="password" placeholder="Введите..." />
-      <button onclick="checkPassword()">Открыть</button>
-      <p id="error" style="color:pink;display:none;">Неверный пароль ❤️</p>
-      <p style="font-size:12px;color:#aaa;">Подсказка: слово про любовь</p>
-      <div class="love-note">Сделано с любовью 💖</div>
-    </div>
-    <div id="stage1" class="stage">
-      <h2>Ты меня любишь?</h2>
-      <button onclick="showStage(2)">Да</button>
-      <button id="noBtn" class="no-btn">Нет</button>
-    </div>
-    <div id="stage2" class="stage">
-      <h2>101 причина, почему я тебя люблю</h2>
-      <div class="reason-box" id="reasonBox"></div>
-      <div>
-        <button onclick="prevReason()">←</button>
-        <button onclick="nextReason()">→</button>
-        <button onclick="resetReason()">С начала</button>
-      </div>
-    </div>
+
+<canvas id="space"></canvas>
+<div id="nebula"></div>
+<div id="effects"></div>
+
+<!-- Страница 1: Пароль -->
+<div id="page1" class="page" style="display:block;">
+  <div class="container">
+    <h1 class="site-title">Открытка для тебя</h1>
+    <h2 class="page-title">Введи пароль</h2>
+    <input type="password" id="password" placeholder="Введите пароль" />
+    <br />
+    <button onclick="checkPassword()">Открыть</button>
+    <div id="pwError" style="display:none; color:#ff9ad0; margin-top:8px;">Неверный пароль ❤️</div>
+    <div class="hint">Подсказка: слово про любовь</div>
+    <div class="footer">Сделано с любовью 💖</div>
   </div>
+</div>
 
-  <script>
-    // ===== Космос фон =====
-    const canvas = document.getElementById('space');
-    const ctx = canvas.getContext('2d');
-    let stars = [];
-    function resizeCanvas(){
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
+<!-- Страница 2: Вопрос -->
+<div id="page2" class="page">
+  <div class="container">
+    <h1 class="site-title">Открытка для тебя</h1>
+    <h2 class="page-title">Ты меня любишь?</h2>
+    <button onclick="goReasons()">Да</button>
+    <button id="noBtn">Нет</button>
+  </div>
+</div>
 
-    for(let i=0;i<200;i++){
+<!-- Страница 3: 101 причина -->
+<div id="page3" class="page">
+  <div class="container">
+    <h1 class="site-title">Открытка для тебя</h1>
+    <h2 class="page-title">101 причина, почему я тебя люблю</h2>
+    <p id="reasonText" style="min-height:64px; font-size:18px; margin:10px 0 6px;"></p>
+    <button onclick="prevReason()">Предыдущая</button>
+    <button onclick="nextReason()">Следующая</button>
+  </div>
+</div>
+
+<script>
+  /* === Космос: звёздное небо на canvas === */
+  const canvas = document.getElementById('space');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+  function resizeCanvas(){
+    canvas.width = innerWidth; canvas.height = innerHeight;
+    stars = [];
+    const count = Math.floor((innerWidth * innerHeight) / 6000); // плотность звёзд
+    for(let i=0; i<count; i++){
       stars.push({
-        x:Math.random()*canvas.width,
-        y:Math.random()*canvas.height,
-        r:Math.random()*2+0.5,
-        dx:(Math.random()-0.5)*0.2,
-        dy:(Math.random()-0.5)*0.2
+        x: Math.random()*canvas.width,
+        y: Math.random()*canvas.height,
+        r: Math.random()*1.8 + 0.3,
+        vx: (Math.random()-0.5)*0.05,
+        vy: (Math.random()-0.5)*0.05,
+        tw: Math.random()*2*Math.PI
       });
     }
+  }
+  addEventListener('resize', resizeCanvas);
+  resizeCanvas();
 
-    function drawSpace(){
-      ctx.clearRect(0,0,canvas.width,canvas.height);
+  function drawSpace(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    // лёгкое глубокое свечение фона
+    const g = ctx.createRadialGradient(canvas.width*0.5, canvas.height*0.6, 0, canvas.width*0.5, canvas.height*0.6, canvas.width*0.9);
+    g.addColorStop(0,'rgba(10,10,40,0.8)');
+    g.addColorStop(1,'rgba(0,0,0,0.9)');
+    ctx.fillStyle = g;
+    ctx.fillRect(0,0,canvas.width,canvas.height);
 
-      // Туманность
-      let gradient = ctx.createRadialGradient(
-        canvas.width/2, canvas.height/2, 0,
-        canvas.width/2, canvas.height/2, canvas.width/1.5
-      );
-      gradient.addColorStop(0,'rgba(100,0,150,0.2)');
-      gradient.addColorStop(1,'transparent');
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0,0,canvas.width,canvas.height);
+    // звёзды
+    stars.forEach(s=>{
+      s.x += s.vx; s.y += s.vy;
+      if(s.x<0) s.x = canvas.width; if(s.x>canvas.width) s.x = 0;
+      if(s.y<0) s.y = canvas.height; if(s.y>canvas.height) s.y = 0;
+      s.tw += 0.05;
 
-      // Звёзды
-      stars.forEach(s=>{
-        ctx.beginPath();
-        ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-        ctx.fillStyle='white';
-        ctx.fill();
-        s.x+=s.dx;
-        s.y+=s.dy;
-        if(s.x<0) s.x=canvas.width;
-        if(s.y<0) s.y=canvas.height;
-        if(s.x>canvas.width) s.x=0;
-        if(s.y>canvas.height) s.y=0;
-      });
-      requestAnimationFrame(drawSpace);
+      const flicker = 0.6 + 0.4 * Math.abs(Math.sin(s.tw));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r * flicker, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(255,255,255,'+(0.6+0.4*flicker)+')';
+      ctx.fill();
+    });
+
+    requestAnimationFrame(drawSpace);
+  }
+  drawSpace();
+
+  /* === Эмодзи (🤍 💙 💋) летят снизу вверх === */
+  const effects = document.getElementById('effects');
+  const symbols = ['🤍','💙','💋'];
+  setInterval(()=>{
+    const span = document.createElement('span');
+    span.className = 'emoji';
+    const size = 16 + Math.random()*28;
+    const x = Math.random()*innerWidth;
+    span.style.left = x+'px';
+    span.style.fontSize = size+'px';
+    span.style.animationDuration = (7 + Math.random()*5)+'s';
+    span.textContent = symbols[Math.floor(Math.random()*symbols.length)];
+    effects.appendChild(span);
+    setTimeout(()=> span.remove(), 12000);
+  }, 380);
+
+  /* === Навигация страниц === */
+  const P1 = document.getElementById('page1');
+  const P2 = document.getElementById('page2');
+  const P3 = document.getElementById('page3');
+
+  function show(page){
+    P1.style.display = page===1?'block':'none';
+    P2.style.display = page===2?'block':'none';
+    P3.style.display = page===3?'block':'none';
+  }
+
+  function checkPassword(){
+    const val = (document.getElementById('password').value||'').trim().toLowerCase();
+    if(val === 'люблю'){
+      show(2);
+      document.getElementById('pwError').style.display='none';
+    }else{
+      document.getElementById('pwError').style.display='block';
     }
-    drawSpace();
+  }
 
-    // ===== Логика страниц =====
-    let stage=0;
-    const correctPassword = "люблю";
-    function checkPassword(){
-      const val=document.getElementById('password').value.trim().toLowerCase();
-      if(val===correctPassword){ showStage(1); }
-      else {
-        document.getElementById('error').style.display='block';
-        setTimeout(()=>document.getElementById('error').style.display='none',2000);
-      }
-    }
-    function showStage(n){
-      document.getElementById('stage'+stage).classList.remove('active');
-      stage=n;
-      document.getElementById('stage'+stage).classList.add('active');
-    }
+  function goReasons(){ show(3); }
 
-    const noBtn=document.getElementById('noBtn');
-    noBtn.addEventListener('mouseover',moveNoBtn);
-    noBtn.addEventListener('touchstart',moveNoBtn);
-    noBtn.addEventListener('click',()=>showStage(2));
-    function moveNoBtn(){
-      const container=document.querySelector('.card');
-      const rect=container.getBoundingClientRect();
-      const x=Math.random()*(rect.width-80);
-      const y=Math.random()*(rect.height-50);
-      noBtn.style.left=x+'px';
-      noBtn.style.top=y+'px';
-    }
+  // Кнопка "Нет" убегает
+  const noBtn = document.getElementById('noBtn');
+  noBtn.addEventListener('mouseenter', moveNo);
+  noBtn.addEventListener('touchstart', moveNo);
+  function moveNo(){
+    const pad = 12;
+    const maxX = innerWidth - noBtn.offsetWidth - pad;
+    const maxY = innerHeight - noBtn.offsetHeight - pad;
+    noBtn.style.position='absolute';
+    noBtn.style.left = Math.max(8, Math.random()*maxX) + 'px';
+    noBtn.style.top  = Math.max(8, Math.random()*maxY) + 'px';
+  }
 
-    // ===== Причины =====
-    const reasons=[];
-    for(let i=1;i<=101;i++){ reasons.push(`Причина №${i} ❤️`); }
-    let index=0;
-    const reasonBox=document.getElementById('reasonBox');
-    function showReason(){ reasonBox.innerText=(index+1)+'. '+reasons[index]; }
-    function nextReason(){ index=(index+1)%reasons.length; showReason(); }
-    function prevReason(){ index=(index-1+reasons.length)%reasons.length; showReason(); }
-    function resetReason(){ index=0; showReason(); }
-    showReason();
-
-    const reasons = [
-  "1. Ты заставляешь меня улыбаться каждый день",
-  "2. Твои глаза как океан, в котором хочется утонуть",
-  "3. Твой смех делает мир ярче",
-  "4. Ты поддерживаешь меня в трудные моменты",
-  "5. Твои объятия самые тёплые",
-  "6. Ты вдохновляешь меня быть лучше",
-  "7. Ты понимаешь меня без слов",
-  "8. С тобой каждый день — приключение",
-  "9. Твой голос — моя любимая музыка",
-  "10. Ты делаешь обычное особенным",
-  "11. Твоя доброта не имеет границ",
-  "12. Ты умеешь слушать",
-  "13. Твои слова лечат душу",
-  "14. Ты всегда находишь способ рассмешить меня",
-  "15. Ты делаешь мою жизнь ярче",
-  "16. С тобой я чувствую себя в безопасности",
-  "17. Ты мой лучший друг",
-  "18. Ты веришь в меня даже когда я сомневаюсь",
-  "19. Ты умеешь любить искренне",
-  "20. Твой вкус в музыке и фильмах совпадает с моим",
-  "21. Ты всегда стараешься понять меня",
-  "22. Твои глаза сияют, когда ты счастлив",
-  "23. Ты умеешь прощать",
-  "24. Ты помнишь все мелочи о нас",
-  "25. Ты заботишься о моем настроении",
-  "26. Ты делаешь меня смелее",
-  "27. Ты вдохновляешь мечтать",
-  "28. Ты заставляешь меня верить в чудеса",
-  "29. Ты прекрасен(на) внутри и снаружи",
-  "30. Ты умеешь удивлять",
-  "31. Твои прикосновения согревают",
-  "32. Ты даришь радость",
-  "33. Ты умеешь делать комплименты",
-  "34. Ты терпелив(а) со мной",
-  "35. Ты мой свет в темноте",
-  "36. Ты моя опора",
-  "37. Ты умеешь быть честным(честной)",
-  "38. Ты веришь в нас",
-  "39. Ты умеешь ценить моменты",
-  "40. Ты всегда находишь что-то хорошее в людях",
-  "41. Ты вдохновляешь на творчество",
-  "42. Ты мой самый любимый человек",
-  "43. Твоя улыбка делает мой день",
-  "44. Ты делаешь маленькие вещи важными",
-  "45. Ты умеешь радоваться жизни",
-  "46. Ты принимаешь меня такой, какая я есть",
-  "47. Ты заботишься обо мне без напоминаний",
-  "48. Ты умеешь смеяться над собой",
-  "49. Ты умеешь любить без условий",
-  "50. Твоя энергия заряжает меня",
-  "51. Ты поддерживаешь мои мечты",
-  "52. Ты создаёшь уют вокруг себя",
-  "53. Ты умеешь вдохновлять",
-  "54. Твои объятия лечат",
-  "55. Ты мой уютный уголок",
-  "56. Ты умеешь слушать сердце",
-  "57. Ты мой светлый момент",
-  "58. Ты понимаешь мои шутки",
-  "59. Ты умеешь радовать меня",
-  "60. Ты мой источник счастья",
-  "61. Ты даешь силы",
-  "62. Ты умеешь удивлять приятно",
-  "63. Ты веришь в лучшее",
-  "64. Ты вдохновляешь доверять",
-  "65. Ты делаешь будни волшебными",
-  "66. Ты умеешь создавать настроение",
-  "67. Ты понимаешь мои чувства",
-  "68. Ты всегда рядом мысленно",
-  "69. Ты умеешь поддержать",
-  "70. Ты мой любимый человек в мире",
-  "71. Ты даришь тепло",
-  "72. Ты умеешь радоваться мелочам",
-  "73. Ты понимаешь мою душу",
-  "74. Ты умеешь удивлять добром",
-  "75. Ты даришь веру в себя",
-  "76. Ты мой компас",
-  "77. Ты помогаешь расти",
-  "78. Ты веришь в меня сильнее, чем я сама",
-  "79. Ты делаешь мир ярче",
-  "80. Ты умеешь ценить моменты вместе",
-  "81. Ты вдохновляешь на счастье",
-  "82. Ты всегда находишь правильные слова",
-  "83. Ты умеешь успокаивать",
-  "84. Ты даришь радость простым словам",
-  "85. Ты мой самый близкий человек",
-  "86. Ты умеешь делать приятное",
-  "87. Ты понимаешь мои мечты",
-  "88. Ты умеешь радовать сердце",
-  "89. Ты мой источник вдохновения",
-  "90. Ты даришь чувство счастья",
-  "91. Ты умеешь удивлять меня снова и снова",
-  "92. Ты даришь веру в любовь",
-  "93. Ты умеешь улыбаться вместе со мной",
-  "94. Ты создаёшь уют вокруг нас",
-  "95. Ты мой свет в серые дни",
-  "96. Ты умеешь делать день особенным",
-  "97. Ты даришь тепло сердца",
-  "98. Ты мой лучший компаньон",
-  "99. Ты умеешь делать жизнь красивой",
-  "100. Ты всегда в моём сердце",
-  "101. Ты причина моего счастья ❤️"
-];
-
-
-    // ===== Сердечки и поцелуи =====
-    function spawnHearts(){
-      const heart=document.createElement('div');
-      heart.className='heart';
-      heart.innerText=Math.random()>0.5?'❤':'💋';
-      heart.style.left=Math.random()*100+'%';
-      heart.style.fontSize=(15+Math.random()*30)+'px';
-      heart.style.animationDuration=(5+Math.random()*7)+'s';
-      document.body.appendChild(heart);
-      setTimeout(()=>heart.remove(),10000);
-    }
-    setInterval(spawnHearts,800);
-  </script>
+  /* === 101 причина — полноценный текст === */
+  const reasons = [
+    "1. Ты самый добрый человек в моей жизни",
+    "2. Ты умеешь меня поддержать",
+    "3. Ты делаешь меня счастливой",
+    "4. Ты самый красивый",
+    "5. Ты веришь в меня",
+    "6. Ты умеешь слушать",
+    "7. Ты заставляешь меня смеяться",
+    "8. Ты заботишься обо мне",
+    "9. Ты умеешь удивлять",
+    "10. Ты мой лучший друг",
+    "11. Ты всегда рядом",
+    "12. Ты даришь мне тепло",
+    "13. Ты искренний",
+    "14. Ты умеешь прощать",
+    "15. Ты делаешь каждый день особенным",
+    "16. Ты мой герой",
+    "17. Ты вдохновляешь меня",
+    "18. Ты понимаешь меня",
+    "19. Ты заботливый",
+    "20. Ты настоящий",
+    "21. Ты даришь радость",
+    "22. Ты умеешь слушать сердце",
+    "23. Ты всегда поддерживаешь мои мечты",
+    "24. Ты обнимаешь лучше всех",
+    "25. Ты мой смысл",
+    "26. Ты умеешь быть романтичным",
+    "27. Ты делаешь меня сильнее",
+    "28. Ты даришь нежность",
+    "29. Ты веришь в чудеса",
+    "30. Ты делаешь мою жизнь ярче",
+    "31. Ты честный",
+    "32. Ты умеешь быть смешным",
+    "33. Ты знаешь, как поднять настроение",
+    "34. Ты лучший в мире",
+    "35. Ты даришь любовь",
+    "36. Ты верный",
+    "37. Ты умеешь делать сюрпризы",
+    "38. Ты умеешь радоваться жизни",
+    "39. Ты мой свет",
+    "40. Ты согреваешь душу",
+    "41. Ты всегда понимаешь",
+    "42. Ты делаешь меня лучше",
+    "43. Ты особенный",
+    "44. Ты умеешь слушать душой",
+    "45. Ты всегда улыбаешься",
+    "46. Ты веришь в нас",
+    "47. Ты мой ангел",
+    "48. Ты всегда честен",
+    "49. Ты умеешь мечтать",
+    "50. Ты делаешь мир прекраснее",
+    "51. Ты умеешь вдохновлять",
+    "52. Ты даришь заботу",
+    "53. Ты любишь жизнь",
+    "54. Ты мой идеал",
+    "55. Ты делаешь меня счастливой каждый день",
+    "56. Ты умеешь ценить моменты",
+    "57. Ты понимаешь мои чувства",
+    "58. Ты даришь радость просто так",
+    "59. Ты умеешь слушать тишину",
+    "60. Ты всегда рядом, когда нужен",
+    "61. Ты мой спутник по жизни",
+    "62. Ты умеешь любить",
+    "63. Ты особенный для меня",
+    "64. Ты согреваешь сердце",
+    "65. Ты умеешь быть настоящим",
+    "66. Ты умеешь смеяться искренне",
+    "67. Ты мой дом",
+    "68. Ты умеешь поддерживать",
+    "69. Ты знаешь, как сделать день лучше",
+    "70. Ты умеешь быть сильным",
+    "71. Ты умеешь прощать",
+    "72. Ты даришь надежду",
+    "73. Ты согреваешь душу",
+    "74. Ты делаешь жизнь яркой",
+    "75. Ты вдохновляешь улыбаться",
+    "76. Ты даришь любовь",
+    "77. Ты умеешь быть собой",
+    "78. Ты веришь в нас двоих",
+    "79. Ты даришь счастье",
+    "80. Ты понимаешь без слов",
+    "81. Ты умеешь быть нежным",
+    "82. Ты делаешь каждый день особенным",
+    "83. Ты мой мир",
+    "84. Ты даришь уверенность",
+    "85. Ты умеешь радовать меня",
+    "86. Ты всегда поддерживаешь",
+    "87. Ты веришь в чудеса",
+    "88. Ты вдохновляешь на большее",
+    "89. Ты понимаешь мои мечты",
+    "90. Ты даришь тепло сердца",
+    "91. Ты умеешь быть искренним",
+    "92. Ты создаешь счастье вокруг",
+    "93. Ты вдохновляешь на любовь",
+    "94. Ты мой солнечный свет",
+    "95. Ты всегда рядом",
+    "96. Ты умеешь быть благодарным",
+    "97. Ты вдохновляешь на лучшее",
+    "98. Ты моя радость",
+    "99. Ты даришь смех",
+    "100. Ты моя гармония",
+    "101. Ты — всё для меня"
+  ];
+  let idx = 0;
+  const reasonText = document.getElementById('reasonText');
+  function render(){ reasonText.textContent = reasons[idx]; }
+  function nextReason(){ idx = (idx+1)%reasons.length; render(); }
+  function prevReason(){ idx = (idx-1+reasons.length)%reasons.length; render(); }
+  render();
+</script>
 </body>
 </html>
