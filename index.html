@@ -11,17 +11,14 @@ body, html {
   height: 100%;
   font-family: 'Segoe UI', sans-serif;
   overflow: hidden;
-  background: linear-gradient(135deg, #0b0c3f 0%, #1a003d 100%);
 }
 
-/* Космос: звезды */
-#stars {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  z-index: -3;
-  overflow: hidden;
+/* Космос */
+body {
+  background: radial-gradient(circle at top, #0b0c3f, #1a003d);
 }
+
+/* Звезды */
 .star {
   position: absolute;
   border-radius: 50%;
@@ -53,7 +50,7 @@ body, html {
   100% { transform: translate(0,0) scale(1); }
 }
 
-/* Общая обертка */
+/* Страницы */
 .page {
   display: none;
   min-height: 100dvh;
@@ -110,9 +107,10 @@ button {
   background: #ff3c8d;
   color: white;
   font-weight: bold;
+  position: relative;
 }
 
-/* Летающие смайлы */
+/* Летающие смайлы и сердца */
 #effects { 
   position: fixed; 
   inset: 0; 
@@ -183,7 +181,7 @@ button {
 <script>
 // Звезды
 const starsContainer = document.getElementById('stars');
-for(let i=0;i<250;i++){
+for(let i=0;i<150;i++){
   const star = document.createElement('div');
   star.className='star';
   const size = Math.random()*3+1;
@@ -209,7 +207,7 @@ function createEmoji() {
   effectsContainer.appendChild(span);
   setTimeout(()=>effectsContainer.removeChild(span),10000);
 }
-setInterval(createEmoji, 300);
+setInterval(createEmoji, 200);
 
 // Пароль
 function checkPassword() {
