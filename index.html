@@ -30,7 +30,7 @@
     animation: twinkle linear infinite;
   }
   @keyframes twinkle {
-    0%, 100% { opacity: 0.2; }
+    0%, 100% { opacity: 0.1; }
     50% { opacity: 1; }
   }
 
@@ -56,25 +56,24 @@
   /* Страницы — флекс-центрирование, чтобы всё влезало */
   .page {
     display: none;               /* будет 'flex' у активной */
-    min-height: 100dvh;          /* учитывает мобильные панели */
+    min-height: 100dvh;          
     align-items: center;
     justify-content: center;
-    padding: 16px;               /* безопасный отступ от краёв */
+    padding: 16px;
     box-sizing: border-box;
   }
 
   /* Центральное окно */
   .container {
-    position: relative;          /* нужно для убегающей кнопки внутри */
+    position: relative;          
     background: rgba(10, 10, 20, 0.9);
     padding: 30px;
     border-radius: 20px;
     animation: glow 5s linear infinite;
     max-width: 90%;
     width: 520px;
-    max-height: 90vh;            /* фолбек */
-    max-height: 90dvh;           /* чтобы рамка всегда влезала на мобилках */
-    overflow-y: auto;            /* скролл, если текста много */
+    max-height: 90dvh;
+    overflow-y: auto;
     text-align: center;
     z-index: 2;
     box-sizing: border-box;
@@ -111,7 +110,6 @@
     color: white;
     font-weight: bold;
   }
-  .page { display: none; }
 
   /* Летающие смайлики */
   #effects { position: fixed; inset: 0; z-index: -1; pointer-events:none; }
@@ -179,15 +177,16 @@
 <script>
   // Звёзды
   const starsContainer = document.getElementById('stars');
-  for(let i=0;i<150;i++){
+  for(let i=0;i<250;i++){
     const star = document.createElement('div');
     star.className='star';
-    const size = Math.random()*3;
+    const size = Math.random()*2+1;
     star.style.width = size + 'px';
     star.style.height = size + 'px';
     star.style.left = Math.random()*window.innerWidth + 'px';
     star.style.top = Math.random()*window.innerHeight + 'px';
-    star.style.animationDuration = (Math.random()*3+2) + 's';
+    star.style.animationDuration = (Math.random()*5+3) + 's';
+    star.style.opacity = Math.random();
     starsContainer.appendChild(star);
   }
 
@@ -209,13 +208,13 @@
     const pwd = document.getElementById('password').value;
     if(pwd.toLowerCase() === 'розовый') {
       document.getElementById('page1').style.display='none';
-      document.getElementById('page2').style.display='flex';   // ⬅ показываем как flex
+      document.getElementById('page2').style.display='flex'; 
     } else {
       alert('Неверный пароль');
     }
   }
 
-  // Кнопка "Нет" только внутри контейнера
+  // Кнопка "Нет" внутри окна
   const noBtn = document.getElementById('noBtn');
   const container = noBtn.closest('.container');
 
@@ -231,10 +230,10 @@
 
   function nextPage() {
     document.getElementById('page2').style.display='none';
-    document.getElementById('page3').style.display='flex';     // ⬅ показываем как flex
+    document.getElementById('page3').style.display='flex';
   }
 
-  // Причины (заглушки — подставь свои)
+  // Причины (заглушки — замени на свои)
   const reasons = Array.from({length:101},(_,i)=> (i+1)+". Причина, почему я тебя люблю ❤️");
   let reasonIndex = 0;
   const reasonElem = document.getElementById('reason');
