@@ -40,7 +40,7 @@
         to {opacity: 1;}
     }
 
-    /* --- Падающие звезды --- */
+    /* --- Падающие звезды / кометы --- */
     .shooting-star {
         position: absolute;
         width: 2px;
@@ -48,7 +48,7 @@
         background: linear-gradient(-45deg, rgba(255,255,255,1), rgba(255,255,255,0));
         opacity: 0.9;
         border-radius: 50%;
-        filter: drop-shadow(0 0 6px white);
+        filter: drop-shadow(0 0 8px white);
         transform: rotate(45deg);
         animation: shoot 2s linear forwards;
     }
@@ -147,10 +147,10 @@
 <script>
     /* 🌟 Генерация звёзд */
     const starColors = ['#ffffff', '#a0dfff', '#d1a0ff', '#ff99cc'];
-    for (let i = 0; i < 500; i++) {
+    for (let i = 0; i < 900; i++) {  // увеличил количество звёзд
         let star = document.createElement('div');
         star.className = 'star';
-        let size = Math.random() < 0.7 ? Math.random()*1 + 0.5 : Math.random()*3 + 1;
+        let size = Math.random() < 0.8 ? Math.random()*1 + 0.3 : Math.random()*2 + 1;
         star.style.width = size + 'px';
         star.style.height = size + 'px';
         star.style.top = Math.random() * 100 + '%';
@@ -170,7 +170,7 @@
         document.body.appendChild(star);
         setTimeout(()=>{star.remove()}, 2000);
     }
-    setInterval(createShootingStar, 5000);
+    setInterval(createShootingStar, 2500); // чаще (каждые 2.5 секунды)
 
     /* 💖 Летающие эмодзи */
     const emojis = ['🤍','💙','💜','💋','💖','💗'];
