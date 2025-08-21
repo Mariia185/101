@@ -14,7 +14,7 @@
         color: white;
         height: 100%;
         width: 100%;
-        background: radial-gradient(circle at bottom, #0b0c2b, #1a0047); /* тёмно-синий + тёмно-фиолетовый */
+        background: linear-gradient(to bottom, #0b0c2b, #1a0047); /* темно-синий → темно-фиолетовый */
         position: relative;
     }
 
@@ -56,11 +56,11 @@
         animation: glow 6s infinite alternate;
     }
 
-    /* ✨ Нежное переливание синего → фиолетового → розового */
+    /* ✨ Яркое свечение рамки */
     @keyframes glow {
-        0%   {box-shadow: 0 0 30px 10px rgba(0,150,255,0.6);}
-        50%  {box-shadow: 0 0 40px 15px rgba(160,0,255,0.6);}
-        100% {box-shadow: 0 0 50px 20px rgba(255,100,180,0.6);}
+        0%   {box-shadow: 0 0 40px 20px rgba(0,150,255,0.9);}
+        50%  {box-shadow: 0 0 60px 25px rgba(160,0,255,0.9);}
+        100% {box-shadow: 0 0 70px 30px rgba(255,100,180,1);}
     }
 
     h2 {
@@ -95,7 +95,7 @@
         position: relative;
     }
 
-    .heart, .kiss {
+    .heart {
         position: absolute;
         font-size: 20px;
         animation: flyUp 6s linear infinite;
@@ -134,10 +134,10 @@
 <script>
     // 🌟 Создание звёзд
     const starColors = ['#ffffff', '#a0dfff', '#d1a0ff', '#ff99cc'];
-    for (let i = 0; i < 250; i++) {
+    for (let i = 0; i < 500; i++) { // ⭐ стало больше звёзд
         let star = document.createElement('div');
         star.className = 'star';
-        let size = Math.random()*3 + 1;
+        let size = Math.random() < 0.7 ? Math.random()*1 + 0.5 : Math.random()*3 + 1; 
         star.style.width = size + 'px';
         star.style.height = size + 'px';
         star.style.top = Math.random() * 100 + '%';
