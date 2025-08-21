@@ -3,252 +3,213 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Любовная открытка</title>
+<title>Открытка для парня</title>
 <style>
-body, html {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  font-family: 'Segoe UI', sans-serif;
-  overflow: hidden;
-}
+    body, html {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        font-family: Arial, sans-serif;
+        color: white;
+        height: 100%;
+        width: 100%;
+        background: radial-gradient(circle at 50% 50%, #0b0c2b, #1a0047);
+        position: relative;
+    }
 
-/* Космос */
-body {
-  background: radial-gradient(circle at top, #0b0c3f, #1a003d);
-}
+    .stars {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: transparent;
+        overflow: hidden;
+        z-index: 0;
+    }
 
-/* Звезды */
-.star {
-  position: absolute;
-  border-radius: 50%;
-  background: white;
-  opacity: 0.8;
-  animation: twinkle linear infinite;
-}
-@keyframes twinkle {
-  0%, 100% { opacity: 0.2; }
-  50% { opacity: 1; }
-}
+    .star {
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        background: white;
+        border-radius: 50%;
+        opacity: 0.8;
+        animation: twinkle 2s infinite alternate;
+    }
 
-/* Туманность */
-#nebula {
-  position: fixed;
-  width: 200%;
-  height: 200%;
-  top: -50%;
-  left: -50%;
-  background: radial-gradient(circle at 30% 30%, rgba(0,100,255,0.25), transparent 60%),
-              radial-gradient(circle at 70% 70%, rgba(255,0,200,0.2), transparent 60%),
-              radial-gradient(circle at 50% 80%, rgba(0,200,255,0.2), transparent 60%);
-  animation: moveNebula 60s linear infinite;
-  z-index: -2;
-}
-@keyframes moveNebula {
-  0% { transform: translate(0,0) scale(1); }
-  50% { transform: translate(100px, -100px) scale(1.2); }
-  100% { transform: translate(0,0) scale(1); }
-}
+    @keyframes twinkle {
+        from {opacity: 0.2;}
+        to {opacity: 1;}
+    }
 
-/* Страницы */
-.page {
-  display: none;
-  min-height: 100dvh;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-  box-sizing: border-box;
-}
+    .container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90%;
+        max-width: 400px;
+        background: rgba(20,20,50,0.9);
+        padding: 20px;
+        border-radius: 20px;
+        box-shadow: 0 0 30px 5px #ff6ec7, 0 0 60px 10px #ff0000, 0 0 90px 20px #ff00ff;
+        text-align: center;
+        z-index: 1;
+        animation: glow 3s infinite alternate;
+    }
 
-/* Центральное окно */
-.container {
-  position: relative;
-  background: rgba(10, 10, 20, 0.9);
-  padding: 30px;
-  border-radius: 20px;
-  animation: glow 5s linear infinite;
-  max-width: 90%;
-  width: 520px;
-  max-height: 90dvh;
-  overflow-y: auto;
-  text-align: center;
-  z-index: 2;
-  box-sizing: border-box;
-}
-@keyframes glow {
-  0% { box-shadow: 0 0 30px 5px #ff3c8d; }
-  25% { box-shadow: 0 0 30px 5px #ff0000; }
-  50% { box-shadow: 0 0 30px 5px #ff1493; }
-  75% { box-shadow: 0 0 30px 5px #ff69b4; }
-  100% { box-shadow: 0 0 30px 5px #ff3c8d; }
-}
+    @keyframes glow {
+        0% {box-shadow: 0 0 30px 5px #ff6ec7, 0 0 60px 10px #ff0000, 0 0 90px 20px #ff00ff;}
+        50% {box-shadow: 0 0 40px 10px #00ffff, 0 0 70px 15px #ff00ff, 0 0 100px 25px #ff6ec7;}
+        100% {box-shadow: 0 0 30px 5px #ff6ec7, 0 0 60px 10px #ff0000, 0 0 90px 20px #ff00ff;}
+    }
 
-h2, h1, p {
-  color: white;
-}
+    input[type="password"] {
+        padding: 10px;
+        border-radius: 10px;
+        border: none;
+        width: 80%;
+        margin-top: 20px;
+    }
 
-input {
-  padding: 10px;
-  border-radius: 10px;
-  border: none;
-  outline: none;
-  margin-top: 20px;
-  width: 80%;
-  max-width: 250px;
-  background:#0f1030; 
-  color:#fff;
-}
-button {
-  padding: 10px 20px;
-  margin-top: 20px;
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
-  background: #ff3c8d;
-  color: white;
-  font-weight: bold;
-  position: relative;
-}
+    button {
+        padding: 10px 20px;
+        margin-top: 20px;
+        border-radius: 10px;
+        border: none;
+        background-color: #ff6ec7;
+        color: white;
+        cursor: pointer;
+        font-weight: bold;
+    }
 
-/* Летающие смайлы и сердца */
-#effects { 
-  position: fixed; 
-  inset: 0; 
-  z-index: -1; 
-  pointer-events:none; 
-  overflow: hidden;
-}
-.emoji {
-  position: absolute;
-  bottom: -50px;
-  font-size: 20px;
-  animation: floatUp linear infinite;
-  opacity: 0.9;
-}
-@keyframes floatUp {
-  0% { transform: translateY(0) scale(1); opacity: 1; }
-  100% { transform: translateY(-120vh) scale(1.5); opacity: 0; }
-}
+    #noButton {
+        position: relative;
+    }
 
-.footer {
-  margin-top: 20px;
-  font-size: 14px;
-  color: #ff69b4;
-}
+    .heart, .kiss {
+        position: absolute;
+        font-size: 20px;
+        animation: flyUp 6s linear infinite;
+    }
 
-@media(max-width:600px){
-  .container { padding: 20px; width: 100%; }
-  input { width: 100%; }
-}
+    @keyframes flyUp {
+        0% {transform: translateY(100vh);}
+        100% {transform: translateY(-50px);}
+    }
 </style>
 </head>
 <body>
 
-<div id="stars"></div>
-<div id="nebula"></div>
-<div id="effects"></div>
+<div class="stars" id="stars"></div>
 
-<!-- Страница 1 -->
-<div id="page1" class="page" style="display:flex;">
-  <div class="container">
-    <h2>Введите пароль</h2>
-    <input type="password" id="password" placeholder="Пароль">
-    <br>
+<div class="container" id="page1">
+    <h2>Секретная открытка для тебя ❤️</h2>
+    <input type="password" id="passwordInput" placeholder="Введите пароль">
+    <p>Подсказка: это слово из сердца 💖</p>
+    <p style="margin-top: 20px; font-size: 12px;">Сделано с любовью 💌</p>
     <button onclick="checkPassword()">Войти</button>
-    <div class="footer">Сделано с любовью ❤️</div>
-    <div style="margin-top:10px; font-size:12px; color:white;">Подсказка: мой любимый цвет</div>
-  </div>
 </div>
 
-<!-- Страница 2 -->
-<div id="page2" class="page">
-  <div class="container">
+<div class="container" id="page2" style="display:none;">
     <h2>Ты меня любишь?</h2>
-    <button id="yesBtn" onclick="nextPage()">Да</button>
-    <button id="noBtn">Нет</button>
-  </div>
+    <button id="yesButton" onclick="showReasons()">Да</button>
+    <button id="noButton">Нет</button>
 </div>
 
-<!-- Страница 3 -->
-<div id="page3" class="page">
-  <div class="container">
+<div class="container" id="page3" style="display:none;">
     <h2>101 причина, почему я тебя люблю</h2>
-    <p id="reason">Загрузка...</p>
-    <button onclick="nextReason()">Следующая</button>
-  </div>
+    <p id="reasonText"></p>
+    <button onclick="nextReason()">Следующая причина</button>
 </div>
 
 <script>
-// Звезды
-const starsContainer = document.getElementById('stars');
-for(let i=0;i<150;i++){
-  const star = document.createElement('div');
-  star.className='star';
-  const size = Math.random()*3+1;
-  star.style.width = size + 'px';
-  star.style.height = size + 'px';
-  star.style.left = Math.random()*window.innerWidth + 'px';
-  star.style.top = Math.random()*window.innerHeight + 'px';
-  star.style.animationDuration = (Math.random()*5+3) + 's';
-  star.style.background = ['white','#8ecbff','#b3e5fc'][Math.floor(Math.random()*3)];
-  starsContainer.appendChild(star);
-}
+    // Звезды
+    for (let i = 0; i < 100; i++) {
+        let star = document.createElement('div');
+        star.className = 'star';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.width = Math.random()*3 + 'px';
+        star.style.height = star.style.width;
+        star.style.animationDuration = (Math.random()*3 + 2) + 's';
+        document.getElementById('stars').appendChild(star);
+    }
 
-// Смайлики
-const effectsContainer = document.getElementById('effects');
-const symbols = ['🤍','💙','💎','💋'];
-function createEmoji() {
-  const span = document.createElement('span');
-  span.className = 'emoji';
-  span.style.left = Math.random() * window.innerWidth + 'px';
-  span.style.fontSize = (15 + Math.random()*25) + 'px';
-  span.style.animationDuration = (6 + Math.random()*4) + 's';
-  span.textContent = symbols[Math.floor(Math.random()*symbols.length)];
-  effectsContainer.appendChild(span);
-  setTimeout(()=>effectsContainer.removeChild(span),10000);
-}
-setInterval(createEmoji, 200);
+    // Летающие сердечки и поцелуи
+    const emojis = ['💖','💙','💜','💋','💛','💗'];
+    function createEmoji() {
+        let emoji = document.createElement('div');
+        emoji.className = 'heart';
+        emoji.innerText = emojis[Math.floor(Math.random()*emojis.length)];
+        emoji.style.left = Math.random()*100 + 'vw';
+        emoji.style.fontSize = (Math.random()*24 + 16) + 'px';
+        emoji.style.animationDuration = (Math.random()*5 + 5) + 's';
+        document.body.appendChild(emoji);
+        setTimeout(()=>{emoji.remove()}, 10000);
+    }
+    setInterval(createEmoji, 300);
 
-// Пароль
-function checkPassword() {
-  const pwd = document.getElementById('password').value;
-  if(pwd.toLowerCase() === 'розовый') {
-    document.getElementById('page1').style.display='none';
-    document.getElementById('page2').style.display='flex'; 
-  } else {
-    alert('Неверный пароль');
-  }
-}
+    // Пароль
+    function checkPassword() {
+        const input = document.getElementById('passwordInput').value;
+        if(input === 'любовь') {
+            document.getElementById('page1').style.display = 'none';
+            document.getElementById('page2').style.display = 'block';
+        } else {
+            alert('Неверный пароль 💔');
+        }
+    }
 
-// Кнопка "Нет"
-const noBtn = document.getElementById('noBtn');
-const container = noBtn.closest('.container');
-noBtn.addEventListener('mouseenter', () => {
-  const maxX = container.clientWidth - noBtn.offsetWidth - 10;
-  const maxY = container.clientHeight - noBtn.offsetHeight - 10;
-  const x = Math.random() * maxX;
-  const y = Math.random() * maxY;
-  noBtn.style.position = 'absolute';
-  noBtn.style.left = x + 'px';
-  noBtn.style.top = y + 'px';
-});
+    // Кнопка "Нет" убегает
+    const noButton = document.getElementById('noButton');
+    noButton.addEventListener('mouseenter', () => {
+        const containerRect = document.getElementById('page2').getBoundingClientRect();
+        const maxX = containerRect.width - noButton.offsetWidth;
+        const maxY = containerRect.height - noButton.offsetHeight;
+        noButton.style.position = 'absolute';
+        noButton.style.left = Math.random() * maxX + 'px';
+        noButton.style.top = Math.random() * maxY + 'px';
+    });
 
-// Переключение страниц
-function nextPage() {
-  document.getElementById('page2').style.display='none';
-  document.getElementById('page3').style.display='flex';
-}
+    // 101 причина
+    const reasons = [
+        "Ты делаешь меня счастливой каждый день","Твоя улыбка – моя радость","Ты всегда поддерживаешь меня",
+        "Ты заставляешь меня смеяться","Мне нравится, как ты меня обнимаешь","Ты понимаешь меня без слов",
+        "Ты заботишься обо мне","Твоя доброта вдохновляет меня","Ты веришь в меня","Ты делаешь мир ярче",
+        "Мне нравится, как ты готовишь","Ты умеешь слушать","Твои глаза сияют","Ты терпеливый","Твои шутки лучшие",
+        "Ты мотивируешь меня","Мне нравится твой голос","Ты помогаешь мне расти","Ты – мой лучший друг","Ты умеешь прощать",
+        "Мне нравится твой стиль","Ты поддерживаешь мои мечты","Ты креативный","Мне нравится твоя энергия","Ты умеешь удивлять",
+        "Ты честный","Ты вдохновляешь меня быть лучше","Ты – мой уют","Ты умеешь слушать музыку со мной","Твоя доброта заразительна",
+        "Ты умеешь делать сюрпризы","Мне нравится твоя смелость","Ты даешь мне уверенность","Ты – моя опора","Ты заботишься о других",
+        "Мне нравится, как ты обнимаешь","Ты искренний","Ты умеешь прощать","Твоя энергия заряжает","Мне нравится твой смех",
+        "Ты умеешь радоваться мелочам","Ты вдохновляешь меня на творчество","Ты понимаешь мои шутки","Ты верный друг",
+        "Мне нравится твоя решительность","Ты – моя радость","Ты умеешь удивлять","Ты прекрасный слушатель","Мне нравится твоя улыбка",
+        "Ты заботливый","Ты вдохновляешь меня мечтать","Ты умеешь поддерживать","Мне нравится твоя харизма","Ты смелый",
+        "Ты умеешь успокаивать","Ты честный с собой и со мной","Твоя любовь – моя сила","Ты делаешь меня лучше","Ты умеешь радовать меня",
+        "Ты – мой компас в жизни","Мне нравится твоя страсть","Ты творческий","Ты позитивный","Ты веришь в нас",
+        "Мне нравится твой взгляд","Ты умеешь быть настоящим","Ты вдохновляешь меня быть собой","Ты любишь жизнь","Ты понимаешь мои чувства",
+        "Ты поддерживаешь мои цели","Мне нравится твой юмор","Ты добрый","Ты мотивируешь меня двигаться вперед","Ты умеешь радовать",
+        "Ты внимательный","Мне нравится твоя искренность","Ты умеешь удивлять каждый день","Ты заботишься обо мне","Ты вдохновляешь меня любить",
+        "Ты терпеливый","Ты умеешь радовать сердца","Мне нравится твоя нежность","Ты умеешь слушать меня","Ты мой уютный мир",
+        "Ты делаешь меня счастливой","Ты умеешь обнимать","Ты поддерживаешь меня","Ты мотивируешь меня","Мне нравится твоя энергия",
+        "Ты даришь тепло","Ты веришь в меня","Ты мой свет","Ты умеешь любить","Ты искренний","Ты умеешь вдохновлять",
+        "Ты заботишься о других","Мне нравится твоя страсть","Ты радостный","Ты умеешь удивлять","Ты настоящий","Ты – моя опора",
+        "Ты делаешь мир красивее","Ты смелый","Ты умеешь радоваться жизни","Ты мой лучший друг","Ты добрый","Ты понимаешь меня",
+        "Ты – моя радость","Ты делаешь каждый день особенным"
+    ];
 
-// 101 причина
-const reasons = Array.from({length:101},(_,i)=> (i+1)+". Причина, почему я тебя люблю ❤️");
-let reasonIndex = 0;
-const reasonElem = document.getElementById('reason');
-function nextReason(){
-  reasonElem.textContent = reasons[reasonIndex];
-  reasonIndex = (reasonIndex + 1) % reasons.length;
-}
-nextReason();
+    let currentReason = 0;
+    function showReasons() {
+        document.getElementById('page2').style.display = 'none';
+        document.getElementById('page3').style.display = 'block';
+        document.getElementById('reasonText').innerText = reasons[currentReason];
+    }
+
+    function nextReason() {
+        currentReason = (currentReason + 1) % reasons.length;
+        document.getElementById('reasonText').innerText = reasons[currentReason];
+    }
 </script>
-
 </body>
 </html>
+
